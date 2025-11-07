@@ -1,6 +1,6 @@
 ﻿namespace ApplicationTracker.Data.Interfaces
 {
-    internal interface IDataRequest
+    public interface IDataRequest
     {
         public string GetSql();
         public object? GetParameters();

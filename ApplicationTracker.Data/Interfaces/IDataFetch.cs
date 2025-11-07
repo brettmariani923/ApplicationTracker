@@ -1,4 +1,4 @@
 ﻿namespace ApplicationTracker.Data.Interfaces
 {
-    internal interface IDataFetch<TResponse> : IDataRequest { }   
+    public interface IDataFetch<TResponse> : IDataRequest { }   
 }
