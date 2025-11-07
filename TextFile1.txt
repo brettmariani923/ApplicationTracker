@@ -17,9 +17,35 @@ resume sent out ----> first interview ----> rejection email ___/
 
 What code would I need to create a dynamic visualization that I can add to over time?
 
-Need a database to store entries, application table, rows will need commpany name, 
-for columns resumeID, first interview, second, third, rejection email, no response, etc.
+Need a table to store entries, application table, application ID, companyName, job title, etc. 
 
+CREATE TABLE Applications (
+  ApplicationId INT IDENTITY(1,1) PRIMARY KEY,
+  CompanyName   NVARCHAR(200) NOT NULL,
+  JobTitle      NVARCHAR(200) NULL,
+  ResumeId      NVARCHAR(50)  NULL,
+  CreatedUtc    DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+);
+
+
+Need one to store the stages, stageID, stageKey, DisplayName, SortOrder
+Need one 
+
+CREATE TABLE Stages (
+  StageId     INT IDENTITY(1,1) PRIMARY KEY,
+  StageKey    VARCHAR(40) UNIQUE NOT NULL,  -- APPLIED, INT1, INT2, INT3_5, OFFER, HIRED, REJECTED, NO_RESPONSE
+  DisplayName VARCHAR(100) NOT NULL,
+  SortOrder   INT NOT NULL
+);
+
+one to many relationship table between the two (one application can have many stages)
+
+CREATE TABLE ApplicationEvents (
+  EventId       BIGINT IDENTITY(1,1) PRIMARY KEY,
+  ApplicationId INT NOT NULL FOREIGN KEY REFERENCES Applications(ApplicationId) ON DELETE CASCADE,
+  StageId       INT NOT NULL  FOREIGN KEY REFERENCES Stages(StageId),
+  OccurredUtc   DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+);
 
 CRUD functions to create instances, read features, update as things progress, delete...
 will bulk functions be necessary? might be nice to have. I'll probably update as I go, 
@@ -27,6 +53,3 @@ and I dont see a scenario where I'll need to do more than a few at a time.
 I'll think about it more as things progress.
 
 Do it in CA for more practice with the pattern
-
-How will it connect to the front end, and what will I use to represent it visually?
-Do some research on this
