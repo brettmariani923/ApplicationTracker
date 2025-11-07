@@ -27,9 +27,7 @@ CREATE TABLE Applications (
   CreatedUtc    DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
 );
 
-
 Need one to store the stages, stageID, stageKey, DisplayName, SortOrder
-Need one 
 
 CREATE TABLE Stages (
   StageId     INT IDENTITY(1,1) PRIMARY KEY,
