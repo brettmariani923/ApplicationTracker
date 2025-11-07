@@ -1,0 +1,19 @@
+Application tracker to record how many resumes I sent out,
+how many sent me an email to set up a 1st interview,
+how many sent me an email for 2nd interview,
+so on...,
+ultimatley showing which one lead to a job.
+
+I'd like it to visually demonstrate the number of each by category,
+more than just a simple number.
+Could do lines that connect to the different tiers, for example
+
+																				   /---->  got the job!
+															/----> third thru fith ____/
+									 /----> second interview ----> rejection email
+resume sent out ----> first interview ----> rejection email ___/
+				\---> rejection email ___/
+				 \----> no response
+
+What code would I need to create a dynamic visualization that I can add to over time?
+
