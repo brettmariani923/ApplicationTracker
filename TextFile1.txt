@@ -26,4 +26,7 @@ will bulk functions be necessary? might be nice to have. I'll probably update as
 and I dont see a scenario where I'll need to do more than a few at a time. 
 I'll think about it more as things progress.
 
+Do it in CA for more practice with the pattern
 
+How will it connect to the front end, and what will I use to represent it visually?
+Do some research on this
