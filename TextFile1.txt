@@ -17,3 +17,13 @@ resume sent out ----> first interview ----> rejection email ___/
 
 What code would I need to create a dynamic visualization that I can add to over time?
 
+Need a database to store entries, application table, rows will need resume ID and Company name 
+for columns first interview, second, third, rejection email, no response, etc.
+
+
+CRUD functions to create instances, read features, update as things progress, delete...
+will bulk functions be necessary? might be nice to have. I'll probably update as I go, 
+and I dont see a scenario where I'll need to do more than a few at a time. 
+I'll think about it more as things progress.
+
+
