@@ -1,6 +1,6 @@
 ﻿namespace ApplicationTracker.Data.Interfaces
 {
-    internal interface IDataAccess
+    public interface IDataAccess
     {
         public Task<int> ExecuteAsync(IDataExecute request);
         public Task<TResponse?> FetchAsync<TResponse>(IDataFetch<TResponse> request);

@@ -12,4 +12,11 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ApplicationTracker.Application\ApplicationTracker.Application.csproj" />
+    <ProjectReference Include="..\ApplicationTracker.Data\ApplicationTracker.Data.csproj" />
+    <ProjectReference Include="..\ApplicationTracker.Domain\ApplicationTracker.Domain.csproj" />
+    <ProjectReference Include="..\ApplicationTracker.SqlServerDatabase\ApplicationTracker.SqlServerDatabase.sqlproj" />
+  </ItemGroup>
+
 </Project>
