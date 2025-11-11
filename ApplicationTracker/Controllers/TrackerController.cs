@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ApplicationTracker.Data.Interfaces;
+using ApplicationTracker.Application.Interfaces;
 
 namespace ApplicationTracker.Controllers
 {
@@ -7,7 +8,7 @@ namespace ApplicationTracker.Controllers
     {
         private readonly IDataAccess _data;
         private readonly ITrackerService _trackerService;
-        public TrackerController(IDataAccess data, ItrackerService trackerService)
+        public TrackerController(IDataAccess data, ITrackerService trackerService)
         {
             _data = data;
             _trackerService = trackerService;
