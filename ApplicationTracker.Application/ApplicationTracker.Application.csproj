@@ -11,4 +11,13 @@
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ApplicationTracker.Data\ApplicationTracker.Data.csproj" />
+    <ProjectReference Include="..\ApplicationTracker.Domain\ApplicationTracker.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
 </Project>

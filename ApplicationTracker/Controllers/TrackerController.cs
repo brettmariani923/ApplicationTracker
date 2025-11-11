@@ -6,9 +6,17 @@ namespace ApplicationTracker.Controllers
     public class TrackerController : Controller
     {
         private readonly IDataAccess _data;
-        public TrackerController(IDataAccess data)
+        private readonly ITrackerService _trackerService;
+        public TrackerController(IDataAccess data, ItrackerService trackerService)
         {
             _data = data;
+            _trackerService = trackerService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var jobs = await _trackerService.GetAllApplicationsAsync();
+            return View(jobs);
         }
 
 
