@@ -24,9 +24,10 @@ namespace ApplicationTracker.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddApplication(int )
+        public async Task<IActionResult> AddApplication( )
         {
-            await _trackerService.InsertApplicationAsync()            
+            await _trackerService.InsertApplicationAsync();
+            return View();
         }
 
 
