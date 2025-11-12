@@ -13,6 +13,7 @@ namespace ApplicationTracker.Data.Implementation
         public async Task<TResponse?> FetchAsync<TResponse>(IDataFetch<TResponse> request) => await HandleRequest(async _ => await _.QueryFirstOrDefaultAsync<TResponse>(request.GetSql(), request.GetParameters()));
         public async Task<IEnumerable<TResponse>> FetchListAsync<TResponse>(IDataFetchList<TResponse> request) => await HandleRequest(async _ => await _.QueryAsync<TResponse>(request.GetSql(), request.GetParameters()));
     
+        //helper
         private async Task<T> HandleRequest<T>(Func<IDbConnection, Task<T>> funcHandleRequest)
         {
             using var connection = _connectionFactory.NewConnection();

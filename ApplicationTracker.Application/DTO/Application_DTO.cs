@@ -1,4 +1,10 @@
-﻿namespace ApplicationTracker.Data.DTO
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ApplicationTracker.Application.DTO
 {
     public class Application_DTO
     {

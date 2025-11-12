@@ -1,6 +1,7 @@
 ﻿using ApplicationTracker.Data.Requests;
-using ApplicationTracker.Data.DTO;
+using ApplicationTracker.Data.Rows;
 using ApplicationTracker.Data.Interfaces;
+using ApplicationTracker.Data.DTO;
 
 namespace ApplicationTracker.Application.Services
 {
@@ -15,10 +16,10 @@ namespace ApplicationTracker.Application.Services
             return result.ToList();
         }
 
-        public async Task InsertApplicationAsync()
+        public async Task InsertApplicationAsync(Application_Row model)
         {
-            var request = new InsertApplicationRequest();
-            var result = await _dataAccess.ExecuteAsync
+            var request = new InsertApplicationRequest(model);
+            var result = await _dataAccess.ExecuteAsync(request);
         }
     }
 }

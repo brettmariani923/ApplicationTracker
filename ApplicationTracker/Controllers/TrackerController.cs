@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ApplicationTracker.Data.Interfaces;
 using ApplicationTracker.Application.Interfaces;
-using ApplicationTracker.Data.DTO;
+using ApplicationTracker.Data.Rows;
 
 namespace ApplicationTracker.Controllers
 {

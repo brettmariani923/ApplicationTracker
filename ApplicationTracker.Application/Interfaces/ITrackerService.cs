@@ -1,9 +1,9 @@
-﻿using ApplicationTracker.Data.DTO;
+﻿using ApplicationTracker.Data.Rows;
 
 namespace ApplicationTracker.Application.Interfaces
 {
     public interface ITrackerService
     {
-        Task<List<Application_DTO>> GetAllApplicationsAsync();
+        Task<List<Application_Row>> GetAllApplicationsAsync();
     }
 }
