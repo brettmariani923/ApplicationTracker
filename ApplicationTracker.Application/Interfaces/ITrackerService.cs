@@ -5,8 +5,10 @@ namespace ApplicationTracker.Application.Interfaces
 {
     public interface ITrackerService
     {
-        Task<List<Application_Row>> GetAllApplicationsAsync();
-        Task<List<Application_DTO>> InsertApplicationAsync()
+        Task<List<Application_DTO>> GetAllApplicationsAsync();
+        Task<List<Application_Row>> InsertApplicationAsync();
+        Task<List<Application_Row>> UpdateApplicationAsync();
+        Task<List<Application_Row>> DeleteApplicationAsync();
 
     }
 }

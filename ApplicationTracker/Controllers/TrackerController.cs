@@ -30,7 +30,19 @@ namespace ApplicationTracker.Controllers
             return View();
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateApplication()
+        {
+            await _trackerService.UpdateApplicationAsync();
+            return View();
+        }
 
+        [HttpDelete]
+        public async Task<IActionResult> DeleteApplication()
+        {
+            await _trackerService.DeleteApplicationAsync();
+            return View();
+        }
 
 
     }

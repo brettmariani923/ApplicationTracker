@@ -21,5 +21,17 @@ namespace ApplicationTracker.Application.Services
             var request = new InsertApplicationRequest(model);
             var result = await _dataAccess.ExecuteAsync(request);
         }
+
+        public async Task UpdateApplicationAsync(Application_Row model)
+        {
+            var request = new UpdateApplicationRequest(model);
+            var result = await _dataAccess.ExecuteAsync(request);
+        }
+
+        public async Task DeleteApplicationAsync(Application_Row model)
+        {
+            var request = new DeleteApplicationRequest(model);
+            var result = await _dataAccess.ExecuteAsync(request);
+        }
     }
 }
