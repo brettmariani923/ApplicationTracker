@@ -1,9 +1,9 @@
-﻿using ApplicationTracker.Data.Interfaces;
-using ApplicationTracker.Data.Rows;
+﻿using ApplicationTracker.Data.Rows;
+using ApplicationTracker.Data.Interfaces;
 
 namespace ApplicationTracker.Data.Requests
 {
-    public class UpdateApplicationRequest
+    public class UpdateApplicationRequest : IDataExecute
     {
         private readonly Application_Row _row;
         public UpdateApplicationRequest(Application_Row row)

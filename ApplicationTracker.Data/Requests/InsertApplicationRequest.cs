@@ -5,7 +5,6 @@ namespace ApplicationTracker.Data.Requests
 {
     public class InsertApplicationRequest : IDataExecute
     {
-
         private readonly Application_Row _row;
 
         public InsertApplicationRequest(Application_Row row)
@@ -14,11 +13,11 @@ namespace ApplicationTracker.Data.Requests
         }
         public string GetSql() => @"INSERT INTO dbo.Applications (CompanyName, JobTitle)" + "Values(@CompanyName, @JobTitle);";
         
-
         public object? GetParameters() => new
         {
             _row.CompanyName,
             _row.JobTitle
         };
+
     }
 }
