@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ApplicationTracker.Data.Interfaces;
 using ApplicationTracker.Application.Interfaces;
+using ApplicationTracker.Data.DTO;
 
 namespace ApplicationTracker.Controllers
 {
@@ -8,17 +9,26 @@ namespace ApplicationTracker.Controllers
     {
         private readonly IDataAccess _data;
         private readonly ITrackerService _trackerService;
+
         public TrackerController(IDataAccess data, ITrackerService trackerService)
         {
             _data = data;
             _trackerService = trackerService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var jobs = await _trackerService.GetAllApplicationsAsync();
             return View(jobs);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddApplication(Application_DTO model)
+        {
+
+        }
+
 
 
 
