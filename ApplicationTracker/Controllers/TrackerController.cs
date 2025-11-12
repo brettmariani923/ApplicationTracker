@@ -24,9 +24,9 @@ namespace ApplicationTracker.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddApplication(Application_DTO model)
+        public async Task<IActionResult> AddApplication(int )
         {
-
+            await _trackerService.InsertApplicationAsync()            
         }
 
 

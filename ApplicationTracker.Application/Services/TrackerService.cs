@@ -14,5 +14,11 @@ namespace ApplicationTracker.Application.Services
             var result = await _dataAccess.FetchListAsync<Application_DTO>(request);
             return result.ToList();
         }
+
+        public async Task InsertApplicationAsync()
+        {
+            var request = new InsertApplicationRequest();
+            var result = await _dataAccess.ExecuteAsync
+        }
     }
 }
