@@ -1,6 +1,6 @@
-﻿namespace ApplicationTracker.Data.Rows;
+﻿namespace ApplicationTracker.Domain.Entities;
 
-public class Application_Row
+public class Application
 {
     public int ApplicationId { get; set; }
     public string CompanyName { get; set; } = "";

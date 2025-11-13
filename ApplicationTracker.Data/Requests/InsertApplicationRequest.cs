@@ -1,23 +1,24 @@
-﻿using ApplicationTracker.Data.Rows;
-using ApplicationTracker.Data.Interfaces;
+﻿using ApplicationTracker.Data.Interfaces;
+using ApplicationTracker.Data.Rows;
 
-namespace ApplicationTracker.Data.Requests
+namespace ApplicationTracker.Data.Requests.Applications;
+
+public class InsertApplicationRequest : IDataExecute
 {
-    public class InsertApplicationRequest : IDataExecute
+    private readonly Application_Row _row;
+
+    public InsertApplicationRequest(Application_Row row)
     {
-        private readonly Application_Row _row;
-
-        public InsertApplicationRequest(Application_Row row)
-        {
-            _row = row;
-        }
-        public string GetSql() => @"INSERT INTO dbo.Applications (CompanyName, JobTitle)" + "Values(@CompanyName, @JobTitle);";
-        
-        public object? GetParameters() => new
-        {
-            _row.CompanyName,
-            _row.JobTitle
-        };
-
+        _row = row ?? throw new ArgumentNullException(nameof(row));
     }
+
+    public string GetSql() => @"
+        INSERT INTO dbo.Applications (CompanyName, JobTitle)
+        VALUES (@CompanyName, @JobTitle);";
+
+    public object? GetParameters() => new
+    {
+        _row.CompanyName,
+        _row.JobTitle
+    };
 }

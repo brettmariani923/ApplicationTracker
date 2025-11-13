@@ -1,49 +1,35 @@
-using Microsoft.AspNetCore.Mvc;
-using ApplicationTracker.Data.Interfaces;
+﻿using ApplicationTracker.Application.DTO;
 using ApplicationTracker.Application.Interfaces;
-using ApplicationTracker.Data.Rows;
+using Microsoft.AspNetCore.Mvc;
 
-namespace ApplicationTracker.Controllers
+namespace ApplicationTracker.Api.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class TrackerController : ControllerBase
 {
-    public class TrackerController : Controller
+    private readonly ITrackerService _tracker;
+
+    public TrackerController(ITrackerService tracker)
     {
-        private readonly IDataAccess _data;
-        private readonly ITrackerService _trackerService;
+        _tracker = tracker ?? throw new ArgumentNullException(nameof(tracker));
+    }
 
-        public TrackerController(IDataAccess data, ITrackerService trackerService)
-        {
-            _data = data;
-            _trackerService = trackerService;
-        }
+    // GET: api/tracker/timelines
+    // Returns each application + ordered list of stages it reached
+    [HttpGet("timelines")]
+    public async Task<ActionResult<IEnumerable<ApplicationTimelineDto>>> GetTimelines()
+    {
+        var timelines = await _tracker.GetApplicationTimelinesAsync();
+        return Ok(timelines);
+    }
 
-        [HttpGet]
-        public async Task<IActionResult> Index()
-        {
-            var jobs = await _trackerService.GetAllApplicationsAsync();
-            return View(jobs);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddApplication( )
-        {
-            await _trackerService.InsertApplicationAsync();
-            return View();
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> UpdateApplication()
-        {
-            await _trackerService.UpdateApplicationAsync();
-            return View();
-        }
-
-        [HttpDelete]
-        public async Task<IActionResult> DeleteApplication()
-        {
-            await _trackerService.DeleteApplicationAsync();
-            return View();
-        }
-
-
+    // GET: api/tracker/stats/funnel
+    // Returns per-stage counts based on highest stage each app reached
+    [HttpGet("stats/funnel")]
+    public async Task<ActionResult<IEnumerable<StageStatsDto>>> GetStageFunnel()
+    {
+        var stats = await _tracker.GetStageFunnelAsync();
+        return Ok(stats);
     }
 }

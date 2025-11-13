@@ -23,8 +23,6 @@ CREATE TABLE Applications (
   ApplicationId INT IDENTITY(1,1) PRIMARY KEY,
   CompanyName   NVARCHAR(200) NOT NULL,
   JobTitle      NVARCHAR(200) NULL,
-  ResumeId      NVARCHAR(50)  NULL,
-  CreatedUtc    DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
 );
 
 Need one to store the stages, stageID, stageKey, DisplayName, SortOrder
@@ -42,7 +40,6 @@ CREATE TABLE ApplicationEvents (
   EventId       BIGINT IDENTITY(1,1) PRIMARY KEY,
   ApplicationId INT NOT NULL FOREIGN KEY REFERENCES Applications(ApplicationId) ON DELETE CASCADE,
   StageId       INT NOT NULL  FOREIGN KEY REFERENCES Stages(StageId),
-  OccurredUtc   DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
 );
 
 CRUD functions to create instances, read features, update as things progress, delete...
@@ -55,3 +52,6 @@ Do it in CA for more practice with the pattern
 For front end, do I want to use Blazor? Might be good to get some practice with it
 bootstraps/javascript?
 
+------------------------------------
+
+Had to redo my setup, the way i had it working didn't make sense.

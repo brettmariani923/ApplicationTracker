@@ -1,6 +1,6 @@
-﻿namespace ApplicationTracker.Data.Rows;
+﻿namespace ApplicationTracker.Application.DTO;
 
-public class Application_Row
+public class ApplicationDto
 {
     public int ApplicationId { get; set; }
     public string CompanyName { get; set; } = "";

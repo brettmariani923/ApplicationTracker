@@ -1,18 +1,15 @@
 ﻿using ApplicationTracker.Data.Interfaces;
-using ApplicationTracker.Data.DTO;
+using ApplicationTracker.Data.Rows;
 
-namespace ApplicationTracker.Data.Requests
+namespace ApplicationTracker.Data.Requests.Applications;
+
+public class ReturnAllApplicationsRequest : IDataFetchList<Application_Row>
 {
-    public class ReturnAllApplicationsRequest : IDataFetchList<Application_DTO>
-    {
-        public string GetSql()
-        {
-            return "Select * FROM dbo.Applications";
-        }
+    public string GetSql() => @"
+        SELECT ApplicationId, CompanyName, JobTitle
+        FROM dbo.Applications
+        ORDER BY ApplicationId;";
 
-        public object? GetParameters()
-        {
-            return null;
-        }
-    }
+    public object? GetParameters() => null;
 }
+

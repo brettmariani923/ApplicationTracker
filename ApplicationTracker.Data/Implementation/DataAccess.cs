@@ -5,7 +5,7 @@ using ApplicationTracker.Data.Interfaces;
 
 namespace ApplicationTracker.Data.Implementation
 {
-    public class DataAccess
+    public class DataAccess : IDataAccess
     {
         private readonly IDbConnectionFactory _connectionFactory;
         DataAccess(IDbConnectionFactory connectionFactory) => _connectionFactory = connectionFactory;

@@ -1,14 +1,21 @@
-﻿using ApplicationTracker.Data.Rows;
-using ApplicationTracker.Data.DTO;
+﻿using ApplicationTracker.Application.DTO;
+using ApplicationTracker.Application.Requests;
 
-namespace ApplicationTracker.Application.Interfaces
+namespace ApplicationTracker.Application.Interfaces;
+
+public interface ITrackerService
 {
-    public interface ITrackerService
-    {
-        Task<List<Application_DTO>> GetAllApplicationsAsync();
-        Task<List<Application_Row>> InsertApplicationAsync();
-        Task<List<Application_Row>> UpdateApplicationAsync();
-        Task<List<Application_Row>> DeleteApplicationAsync();
+    // Basic application CRUD-ish operations
+    Task<List<ApplicationDto>> GetAllApplicationsAsync();
+    Task InsertApplicationAsync(CreateApplicationRequest request);
 
-    }
+    // Stages
+    Task<List<StageDto>> GetAllStagesAsync();
+
+    // Events
+    Task AddApplicationEventAsync(AddApplicationEventRequest request);
+
+    // Analytics / views
+    Task<List<ApplicationTimelineDto>> GetApplicationTimelinesAsync();
+    Task<List<StageStatsDto>> GetStageFunnelAsync();
 }
