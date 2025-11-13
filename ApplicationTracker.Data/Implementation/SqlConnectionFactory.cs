@@ -4,7 +4,7 @@ using ApplicationTracker.Data.Interfaces;
 
 namespace ApplicationTracker.Data.Implementation
 {
-    internal class SqlConnectionFactory : IDbConnectionFactory
+    public class SqlConnectionFactory : IDbConnectionFactory
     {
         private readonly string _connectionString;
 

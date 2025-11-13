@@ -60,8 +60,8 @@
     <Folder Include="DBO\Tables" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="DBO\Tables\Applications.sql" />
-    <Build Include="DBO\Tables\Stages.sql" />
-    <Build Include="DBO\Tables\ApplicationEvents.sql" />
+    <None Include="DBO\Tables\Stages.sql" />
+    <None Include="DBO\Tables\ApplicationEvents.sql" />
+    <None Include="DBO\Tables\Applications.sql" />
   </ItemGroup>
 </Project>

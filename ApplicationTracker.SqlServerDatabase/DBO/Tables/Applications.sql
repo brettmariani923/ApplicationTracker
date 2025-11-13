@@ -4,3 +4,4 @@
   CompanyName   NVARCHAR(200) NOT NULL,
   JobTitle      NVARCHAR(200) NULL,
 );
+

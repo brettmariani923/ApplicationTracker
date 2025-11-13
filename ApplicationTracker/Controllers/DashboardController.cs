@@ -1,5 +1,5 @@
 ﻿using ApplicationTracker.Application.Interfaces;
-using ApplicationTracker.Api.ViewModels;
+using ApplicationTracker.Application.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApplicationTracker.Api.Controllers;
@@ -19,13 +19,16 @@ public class DashboardController : Controller
     {
         var timelines = await _tracker.GetApplicationTimelinesAsync();
         var funnel = await _tracker.GetStageFunnelAsync();
+        var sankey = await _tracker.GetSankeyLinksAsync(); // or whatever you named it
 
         var vm = new TrackerDashboardViewModel
         {
             Timelines = timelines,
-            FunnelStats = funnel
+            FunnelStats = funnel,
+            SankeyLinks = sankey
         };
 
         return View(vm);
     }
+
 }

@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - Application Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <h1>Application Tracker</h1>
+        <nav>
+            <a asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+            <!-- add more links later -->
+        </nav>
+        <hr />
+    </header>
+
+    <main class="container">
+        @RenderBody()
+    </main>
+
+    <footer>
+        <hr />
+        <p>&copy; @DateTime.Now.Year - Application Tracker</p>
+    </footer>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

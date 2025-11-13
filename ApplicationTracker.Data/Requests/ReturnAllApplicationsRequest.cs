@@ -13,3 +13,4 @@ public class ReturnAllApplicationsRequest : IDataFetchList<Application_Row>
     public object? GetParameters() => null;
 }
 
+

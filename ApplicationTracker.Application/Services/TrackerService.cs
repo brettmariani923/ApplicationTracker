@@ -6,6 +6,7 @@ using ApplicationTracker.Data.Requests.Applications;
 using ApplicationTracker.Data.Requests.ApplicationEvents;
 using ApplicationTracker.Data.Requests.Stages;
 using ApplicationTracker.Data.Rows;
+using ApplicationTracker.Application.ViewModels;
 
 namespace ApplicationTracker.Application.Services;
 
@@ -150,6 +151,24 @@ public class TrackerService : ITrackerService
                 ApplicationCount = r.ApplicationCount
             })
             .ToList();
+    }
+
+    public async Task<List<SankeyLinkViewModel>> GetSankeyLinksAsync()
+    {
+        // For now, return hard-coded data so the view works.
+        // Later, replace this with a real query over your ApplicationEvents table.
+        await Task.CompletedTask; // keeps the method async-friendly
+
+        return new List<SankeyLinkViewModel>
+            {
+                new() { From = "Applied",            To = "No response",       Count = 0 },
+                new() { From = "Applied",            To = "Phone Screen",      Count = 1 },
+                new() { From = "Phone Screen",       To = "Technical Interview", Count = 1 },
+                new() { From = "Technical Interview",To = "On-site",           Count = 0 },
+                new() { From = "On-site",            To = "Offer",             Count = 0 },
+                new() { From = "Offer",              To = "Accepted",          Count = 0 },
+                new() { From = "Offer",              To = "Rejected Offer",    Count = 0 }
+            };
     }
 }
 

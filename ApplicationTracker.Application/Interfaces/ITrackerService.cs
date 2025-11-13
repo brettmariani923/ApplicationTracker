@@ -1,5 +1,6 @@
 ﻿using ApplicationTracker.Application.DTO;
 using ApplicationTracker.Application.Requests;
+using ApplicationTracker.Application.ViewModels;
 
 namespace ApplicationTracker.Application.Interfaces;
 
@@ -18,4 +19,5 @@ public interface ITrackerService
     // Analytics / views
     Task<List<ApplicationTimelineDto>> GetApplicationTimelinesAsync();
     Task<List<StageStatsDto>> GetStageFunnelAsync();
+    Task<List<SankeyLinkViewModel>> GetSankeyLinksAsync();
 }
