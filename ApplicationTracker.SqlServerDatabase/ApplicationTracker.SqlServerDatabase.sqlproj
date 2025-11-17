@@ -6,7 +6,7 @@
     <Name>ApplicationTracker.SqlServerDatabase</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{4ce50769-aaa9-4c04-9b11-13e00931122c}</ProjectGuid>
+    <ProjectGuid>{21518a01-6e2a-4a12-9a23-e3efa8985581}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
@@ -62,6 +62,5 @@
   <ItemGroup>
     <None Include="DBO\Tables\Stages.sql" />
     <None Include="DBO\Tables\ApplicationEvents.sql" />
-    <None Include="DBO\Tables\Applications.sql" />
   </ItemGroup>
 </Project>

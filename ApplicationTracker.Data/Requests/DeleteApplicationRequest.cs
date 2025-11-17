@@ -1,29 +1,27 @@
-﻿using ApplicationTracker.Data.DTO;
-using ApplicationTracker.Data.Interfaces;
+﻿using ApplicationTracker.Data.Interfaces;
 
-namespace ApplicationTracker.Data.Requests
+namespace ApplicationTracker.Data.Requests;
+
+public class DeleteApplicationRequest : IDataExecute
 {
-    public class DeleteApplicationRequest : IDataExecute
+    private readonly int _applicationId;
+
+    public DeleteApplicationRequest(int applicationId)
     {
-        private readonly Application_DTO _dto;
+        _applicationId = applicationId;
+    }
 
-        public DeleteApplicationRequest(Application_DTO dto)
-        {
-            _dto = dto;
-        }
+    public string GetSql()
+    {
+        return @"DELETE FROM dbo.Applications
+                 WHERE ApplicationId = @ApplicationId;";
+    }
 
-        public string GetSql()
+    public object? GetParameters()
+    {
+        return new
         {
-            return @"DELETE FROM dbo.Applications
-                     WHERE ApplicationID = @ApplicationId;";
-        }
-
-        public object? GetParameters()
-        {
-            return new
-            {
-                _dto.ApplicationId
-            };
-        }
+            ApplicationId = _applicationId
+        };
     }
 }

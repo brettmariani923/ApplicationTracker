@@ -1,12 +1,12 @@
 ﻿using ApplicationTracker.Application.DTO;
 using ApplicationTracker.Application.Interfaces;
 using ApplicationTracker.Application.Requests;
+using ApplicationTracker.Application.ViewModels;
 using ApplicationTracker.Data.Interfaces;
 using ApplicationTracker.Data.Requests.Applications;
 using ApplicationTracker.Data.Requests.ApplicationEvents;
 using ApplicationTracker.Data.Requests.Stages;
 using ApplicationTracker.Data.Rows;
-using ApplicationTracker.Application.ViewModels;
 
 namespace ApplicationTracker.Application.Services;
 
@@ -49,8 +49,7 @@ public class TrackerService : ITrackerService
 
         var request = new InsertApplicationRequest(row);
         await _dataAccess.ExecuteAsync(request);
-        // If you later change InsertApplicationRequest to output the new ID,
-        // you can change this method to return that int instead.
+        // Optionally return new ID in the future.
     }
 
     // --------------------------------------------------
@@ -123,7 +122,6 @@ public class TrackerService : ITrackerService
             });
         }
 
-        // Optional: sort events inside each app
         foreach (var app in lookup.Values)
         {
             app.Events = app.Events
@@ -132,7 +130,9 @@ public class TrackerService : ITrackerService
                 .ToList();
         }
 
-        return lookup.Values.OrderBy(a => a.ApplicationId).ToList();
+        return lookup.Values
+            .OrderBy(a => a.ApplicationId)
+            .ToList();
     }
 
     // --------------------------------------------------
@@ -153,22 +153,48 @@ public class TrackerService : ITrackerService
             .ToList();
     }
 
+    // --------------------------------------------------
+    // Analytics: Sankey links
+    // --------------------------------------------------
     public async Task<List<SankeyLinkViewModel>> GetSankeyLinksAsync()
     {
-        // For now, return hard-coded data so the view works.
-        // Later, replace this with a real query over your ApplicationEvents table.
-        await Task.CompletedTask; // keeps the method async-friendly
+        var request = new ReturnApplicationTimelinesRequest();
+        var rows = await _dataAccess.FetchListAsync<ApplicationTimeline_Row>(request);
 
-        return new List<SankeyLinkViewModel>
+        var byApp = rows
+            .GroupBy(r => r.ApplicationId)
+            .ToList();
+
+        var transitions = new Dictionary<(string From, string To), int>();
+
+        foreach (var appEvents in byApp)
+        {
+            var ordered = appEvents
+                .OrderBy(e => e.SortOrder)
+                .ThenBy(e => e.EventId)
+                .ToList();
+
+            for (int i = 0; i < ordered.Count - 1; i++)
             {
-                new() { From = "Applied",            To = "No response",       Count = 0 },
-                new() { From = "Applied",            To = "Phone Screen",      Count = 1 },
-                new() { From = "Phone Screen",       To = "Technical Interview", Count = 1 },
-                new() { From = "Technical Interview",To = "On-site",           Count = 0 },
-                new() { From = "On-site",            To = "Offer",             Count = 0 },
-                new() { From = "Offer",              To = "Accepted",          Count = 0 },
-                new() { From = "Offer",              To = "Rejected Offer",    Count = 0 }
-            };
+                var from = ordered[i].DisplayName;
+                var to = ordered[i + 1].DisplayName;
+
+                var key = (from, to);
+                transitions.TryGetValue(key, out var count);
+                transitions[key] = count + 1;
+            }
+
+        }
+
+        return transitions
+            .Select(t => new SankeyLinkViewModel
+            {
+                From = t.Key.From,
+                To = t.Key.To,
+                Count = t.Value
+            })
+            .OrderBy(l => l.From)
+            .ThenBy(l => l.To)
+            .ToList();
     }
 }
-

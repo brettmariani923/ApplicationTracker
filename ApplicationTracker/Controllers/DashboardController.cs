@@ -19,7 +19,7 @@ public class DashboardController : Controller
     {
         var timelines = await _tracker.GetApplicationTimelinesAsync();
         var funnel = await _tracker.GetStageFunnelAsync();
-        var sankey = await _tracker.GetSankeyLinksAsync(); // or whatever you named it
+        var sankey = await _tracker.GetSankeyLinksAsync(); 
 
         var vm = new TrackerDashboardViewModel
         {
