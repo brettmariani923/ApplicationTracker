@@ -1,4 +1,5 @@
-﻿using ApplicationTracker.Data.Interfaces;
+﻿// ApplicationTracker.Data.Requests.ApplicationEvents
+using ApplicationTracker.Data.Interfaces;
 using ApplicationTracker.Data.Rows;
 
 namespace ApplicationTracker.Data.Requests.ApplicationEvents;
@@ -6,18 +7,18 @@ namespace ApplicationTracker.Data.Requests.ApplicationEvents;
 public class ReturnApplicationTimelinesRequest : IDataFetchList<ApplicationTimeline_Row>
 {
     public string GetSql() => @"
-        SELECT
+        SELECT 
             a.ApplicationId,
             a.CompanyName,
             a.JobTitle,
             e.EventId,
-            s.StageId,
+            e.StageId,
             s.StageKey,
             s.DisplayName,
             s.SortOrder
         FROM dbo.Applications a
         JOIN dbo.ApplicationEvents e ON a.ApplicationId = e.ApplicationId
-        JOIN dbo.Stages           s ON e.StageId = s.StageId
+        JOIN dbo.Stages s           ON e.StageId       = s.StageId
         ORDER BY a.ApplicationId, s.SortOrder, e.EventId;";
 
     public object? GetParameters() => null;

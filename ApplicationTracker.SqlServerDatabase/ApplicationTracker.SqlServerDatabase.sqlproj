@@ -62,5 +62,6 @@
   <ItemGroup>
     <None Include="DBO\Tables\Stages.sql" />
     <None Include="DBO\Tables\ApplicationEvents.sql" />
+    <None Include="DBO\Tables\Appllications.sql" />
   </ItemGroup>
 </Project>

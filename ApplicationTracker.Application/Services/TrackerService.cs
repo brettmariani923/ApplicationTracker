@@ -37,19 +37,54 @@ public class TrackerService : ITrackerService
             .ToList();
     }
 
-    public async Task InsertApplicationAsync(CreateApplicationRequest requestModel)
+    public async Task<int> InsertApplicationAsync(CreateApplicationRequest requestModel)
     {
         if (requestModel is null) throw new ArgumentNullException(nameof(requestModel));
 
-        var row = new Application_Row
+        // 1. Insert application
+        var appRow = new Application_Row
         {
             CompanyName = requestModel.CompanyName,
             JobTitle = requestModel.JobTitle
         };
 
-        var request = new InsertApplicationRequest(row);
-        await _dataAccess.ExecuteAsync(request);
-        // Optionally return new ID in the future.
+        var insertAppRequest = new InsertApplicationRequest(appRow);
+        var newAppId = await _dataAccess.FetchAsync<int>(insertAppRequest);
+
+        if (newAppId == 0)
+            throw new InvalidOperationException("Failed to insert application.");
+
+        // 2. Load all stages
+        var stagesRequest = new ReturnAllStagesRequest();
+        var stageRows = await _dataAccess.FetchListAsync<Stage_Row>(stagesRequest);
+
+        // Order by SortOrder so it's "Applied -> Phone Screen -> ... -> Final"
+        var orderedStages = stageRows
+            .OrderBy(s => s.SortOrder)
+            .ToList();
+
+        // Find the selected final stage
+        var targetStage = orderedStages.FirstOrDefault(s => s.StageId == requestModel.StageId);
+        if (targetStage is null)
+            throw new InvalidOperationException($"StageId {requestModel.StageId} not found.");
+
+        // 3. Insert events for all stages up to and including the target
+        foreach (var stage in orderedStages)
+        {
+            var eventRow = new ApplicationEvent_Row
+            {
+                ApplicationId = newAppId,
+                StageId = stage.StageId
+            };
+
+            var insertEventRequest = new InsertApplicationEventRequest(eventRow);
+            await _dataAccess.ExecuteAsync(insertEventRequest);
+
+            if (stage.StageId == targetStage.StageId)
+                break;  // stop once we hit the chosen "final" stage
+        }
+
+        return newAppId;
     }
 
     // --------------------------------------------------
@@ -159,11 +194,14 @@ public class TrackerService : ITrackerService
     public async Task<List<SankeyLinkViewModel>> GetSankeyLinksAsync()
     {
         var request = new ReturnApplicationTimelinesRequest();
-        var rows = await _dataAccess.FetchListAsync<ApplicationTimeline_Row>(request);
-
-        var byApp = rows
-            .GroupBy(r => r.ApplicationId)
+        var rows = (await _dataAccess.FetchListAsync<ApplicationTimeline_Row>(request))
             .ToList();
+
+        if (!rows.Any())
+            return new List<SankeyLinkViewModel>();
+
+        // Group all events per application
+        var byApp = rows.GroupBy(r => r.ApplicationId);
 
         var transitions = new Dictionary<(string From, string To), int>();
 
@@ -174,6 +212,7 @@ public class TrackerService : ITrackerService
                 .ThenBy(e => e.EventId)
                 .ToList();
 
+            // Need at least 2 events to form 1 edge
             for (int i = 0; i < ordered.Count - 1; i++)
             {
                 var from = ordered[i].DisplayName;
@@ -183,7 +222,6 @@ public class TrackerService : ITrackerService
                 transitions.TryGetValue(key, out var count);
                 transitions[key] = count + 1;
             }
-
         }
 
         return transitions
@@ -197,4 +235,5 @@ public class TrackerService : ITrackerService
             .ThenBy(l => l.To)
             .ToList();
     }
+
 }

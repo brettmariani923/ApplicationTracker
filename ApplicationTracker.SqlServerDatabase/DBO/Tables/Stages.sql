@@ -9,10 +9,10 @@
 INSERT INTO dbo.Stages (StageKey, DisplayName, SortOrder)
 VALUES
     ('APPLIED',             'Applied',              1),
-    ('PHONE_SCREEN',        'Phone Screen',         2),
-    ('TECHNICAL_INTERVIEW', 'Technical Interview',  3),
-    ('ON_SITE',             'On-site',              4),
-    ('OFFER',               'Offer',                5),
-    ('ACCEPTED',            'Accepted',             6),
-    ('REJECTED_OFFER',      'Rejected Offer',       7),
-    ('NO_RESPONSE',         'No response',          8);
+    ('NO_RESPONSE',         'No response',          2),
+    ('PHONE_SCREEN',        'Phone Screen',         3),
+    ('TECHNICAL_INTERVIEW', 'Technical Interview',  4),
+    ('ON_SITE',             'On-site',              5),
+    ('OFFER',               'Offer',                6),
+    ('ACCEPTED',            'Accepted',             7),
+    ('REJECTED_OFFER',      'Rejected Offer',       8);

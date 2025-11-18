@@ -8,7 +8,7 @@ public interface ITrackerService
 {
     // Basic application CRUD-ish operations
     Task<List<ApplicationDto>> GetAllApplicationsAsync();
-    Task InsertApplicationAsync(CreateApplicationRequest request);
+    Task<int> InsertApplicationAsync(CreateApplicationRequest requestModel);
 
     // Stages
     Task<List<StageDto>> GetAllStagesAsync();

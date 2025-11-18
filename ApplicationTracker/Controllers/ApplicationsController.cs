@@ -32,7 +32,6 @@ public class ApplicationsController : ControllerBase
 
         await _tracker.InsertApplicationAsync(request);
 
-        // You could later return CreatedAtAction with the new id
         return NoContent();
     }
 }

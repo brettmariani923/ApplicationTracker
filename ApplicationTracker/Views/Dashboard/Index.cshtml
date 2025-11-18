@@ -1,18 +1,21 @@
 ﻿@using ApplicationTracker.Application.ViewModels
-@using ApplicationTracker.Application.DTO
+@using Microsoft.AspNetCore.Mvc.Rendering
 @model TrackerDashboardViewModel
 
 @{
-    // No layout for now, to avoid the _Layout error.
     Layout = null;
-
     ViewData["Title"] = "Application Tracker Dashboard";
 
+    // Bar chart data (funnel stats)
     var labelsJson = System.Text.Json.JsonSerializer.Serialize(
         Model.FunnelStats.Select(s => s.DisplayName));
 
     var countsJson = System.Text.Json.JsonSerializer.Serialize(
         Model.FunnelStats.Select(s => s.ApplicationCount));
+
+    // Sankey data: each row is [From, To, Count]
+    var sankeyRowsJson = System.Text.Json.JsonSerializer.Serialize(
+        Model.SankeyLinks.Select(l => new object[] { l.From, l.To, l.Count }));
 }
 
 <!DOCTYPE html>
@@ -25,6 +28,30 @@
         body {
             font-family: Arial, sans-serif;
             margin: 16px 24px;
+        }
+
+        h1, h2 {
+            margin-top: 16px;
+            margin-bottom: 12px;
+        }
+
+        hr {
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 6px 8px;
+        }
+
+        th {
+            background-color: #f3f3f3;
         }
 
         .timeline {
@@ -47,24 +74,18 @@
             font-size: 0.9rem;
         }
 
-        h1, h2 {
-            margin-top: 16px;
-            margin-bottom: 12px;
+        .chart-container {
+            max-width: 800px;
         }
 
-        table {
+        .sankey-container {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 8px;
+            max-width: 900px;
+            height: 400px;
         }
 
-        th, td {
-            border: 1px solid #ddd;
-            padding: 6px 8px;
-        }
-
-        th {
-            background-color: #f3f3f3;
+        form div {
+            margin-bottom: 8px;
         }
     </style>
 </head>
@@ -72,18 +93,49 @@
 
 <h1>Application Tracker Dashboard</h1>
 
+<!-- New Application Form -->
+<section>
+    <h2>Add New Application</h2>
+
+    <form asp-action="CreateApplication" method="post">
+        @Html.AntiForgeryToken()
+
+        <div>
+            <label asp-for="NewApplication.CompanyName"></label>
+            <input asp-for="NewApplication.CompanyName" />
+            <span asp-validation-for="NewApplication.CompanyName" style="color:red"></span>
+        </div>
+
+        <div>
+            <label asp-for="NewApplication.JobTitle"></label>
+            <input asp-for="NewApplication.JobTitle" />
+            <span asp-validation-for="NewApplication.JobTitle" style="color:red"></span>
+        </div>
+
+        <div>
+            <label asp-for="NewApplication.StageId">Final Stage</label>
+            <select asp-for="NewApplication.StageId"
+                    asp-items="@(new SelectList(Model.Stages, "StageId", "DisplayName"))">
+                <option value="">-- Select stage --</option>
+            </select>
+            <span asp-validation-for="NewApplication.StageId" style="color:red"></span>
+        </div>
+
+        <button type="submit">Add Application</button>
+    </form>
+</section>
+
 <hr />
 
 <h2>Applications by Highest Stage Reached</h2>
-
-<div style="max-width: 800px;">
+<div class="chart-container">
     <canvas id="stageFunnelChart"></canvas>
 </div>
 
 <hr />
 
 <h2>Application Flow (Sankey)</h2>
-<div id="sankey_chart" style="width: 100%; max-width: 900px; height: 400px;"></div>
+<div id="sankey_chart" class="sankey-container"></div>
 
 <hr />
 
@@ -98,27 +150,36 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var app in Model.Timelines)
+    @if (!Model.Timelines.Any())
     {
         <tr>
-            <td>@app.CompanyName</td>
-            <td>@app.JobTitle</td>
-            <td>
-                <div class="timeline">
-                    @for (int i = 0; i < app.Events.Count; i++)
-                    {
-                        var ev = app.Events[i];
-
-                        <span class="stage-pill">@ev.DisplayName</span>
-
-                        if (i < app.Events.Count - 1)
-                        {
-                            <span class="timeline-arrow">→</span>
-                        }
-                    }
-                </div>
-            </td>
+            <td colspan="3">No applications yet.</td>
         </tr>
+    }
+    else
+    {
+        @foreach (var app in Model.Timelines)
+        {
+            <tr>
+                <td>@app.CompanyName</td>
+                <td>@app.JobTitle</td>
+                <td>
+                    <div class="timeline">
+                        @for (int i = 0; i < app.Events.Count; i++)
+                        {
+                            var ev = app.Events[i];
+
+                            <span class="stage-pill">@ev.DisplayName</span>
+
+                            if (i < app.Events.Count - 1)
+                            {
+                                <span class="timeline-arrow">→</span>
+                            }
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
     }
     </tbody>
 </table>
@@ -127,7 +188,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- Google Charts for the Sankey diagram -->
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script>
     (function () {
@@ -158,6 +219,8 @@
         });
 
         // ----- Sankey diagram (SankeyLinks) -----
+        const sankeyRows = @Html.Raw(sankeyRowsJson);
+
         google.charts.load('current', { packages: ['sankey'] });
         google.charts.setOnLoadCallback(drawSankey);
 
@@ -167,12 +230,7 @@
             data.addColumn('string', 'To');
             data.addColumn('number', 'Count');
 
-            data.addRows([
-                @foreach (var link in Model.SankeyLinks)
-                {
-                    @: ['@link.From', '@link.To', @link.Count],
-                }
-            ]);
+            data.addRows(sankeyRows);
 
             var options = {
                 height: 400
