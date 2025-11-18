@@ -1,0 +1,80 @@
+﻿/* dashboard.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 16px 24px;
+}
+
+h1, h2 {
+    margin-top: 16px;
+    margin-bottom: 12px;
+}
+
+hr {
+    margin: 20px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 6px 8px;
+}
+
+th {
+    background-color: #f3f3f3;
+}
+
+.th-company {
+    width: 20%;
+}
+
+.th-jobtitle {
+    width: 20%;
+}
+
+.th-timeline {
+    width: 60%;
+}
+
+.timeline {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.stage-pill {
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid #ccc;
+    margin: 2px;
+    font-size: 0.85rem;
+    background-color: #f9f9f9;
+}
+
+.timeline-arrow {
+    margin: 0 4px;
+    font-size: 0.9rem;
+}
+
+.chart-container {
+    max-width: 800px;
+}
+
+.sankey-container {
+    width: 100%;
+    max-width: 900px;
+    height: 400px;
+}
+
+form div {
+    margin-bottom: 8px;
+}
+
+.validation-error {
+    color: red;
+}

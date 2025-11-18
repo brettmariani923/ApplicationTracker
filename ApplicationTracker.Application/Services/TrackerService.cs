@@ -7,6 +7,8 @@ using ApplicationTracker.Data.Requests.Applications;
 using ApplicationTracker.Data.Requests.ApplicationEvents;
 using ApplicationTracker.Data.Requests.Stages;
 using ApplicationTracker.Data.Rows;
+using ApplicationTracker.Domain.Constants;
+
 
 namespace ApplicationTracker.Application.Services;
 
@@ -56,21 +58,66 @@ public class TrackerService : ITrackerService
 
         // 2. Load all stages
         var stagesRequest = new ReturnAllStagesRequest();
-        var stageRows = await _dataAccess.FetchListAsync<Stage_Row>(stagesRequest);
+        var stageRows = (await _dataAccess.FetchListAsync<Stage_Row>(stagesRequest)).ToList();
 
-        // Order by SortOrder so it's "Applied -> Phone Screen -> ... -> Final"
-        var orderedStages = stageRows
-            .OrderBy(s => s.SortOrder)
-            .ToList();
+        // Map by StageKey so we can build paths by key
+        var stagesByKey = stageRows.ToDictionary(s => s.StageKey, StringComparer.OrdinalIgnoreCase);
 
         // Find the selected final stage
-        var targetStage = orderedStages.FirstOrDefault(s => s.StageId == requestModel.StageId);
+        var targetStage = stageRows.FirstOrDefault(s => s.StageId == requestModel.StageId);
         if (targetStage is null)
             throw new InvalidOperationException($"StageId {requestModel.StageId} not found.");
 
-        // 3. Insert events for all stages up to and including the target
-        foreach (var stage in orderedStages)
+        // Define pipeline and terminal stages by key
+        var pipelineKeys = new[]
         {
+        StageKeys.Applied,
+        StageKeys.PhoneScreen,
+        StageKeys.TechnicalInterview,
+        StageKeys.OnSite,
+        StageKeys.Offer
+    };
+
+        var pathKeys = new List<string>();
+
+        // Decide which path to build based on the final stage
+        if (pipelineKeys.Contains(targetStage.StageKey))
+        {
+            // e.g. final = Technical Interview → Applied -> Phone -> TechnicalInterview
+            foreach (var key in pipelineKeys)
+            {
+                pathKeys.Add(key);
+                if (key.Equals(targetStage.StageKey, StringComparison.OrdinalIgnoreCase))
+                    break;
+            }
+        }
+        else if (targetStage.StageKey == StageKeys.NoResponse)
+        {
+            // Simple: Applied -> No response
+            pathKeys.Add(StageKeys.Applied);
+            pathKeys.Add(StageKeys.NoResponse);
+        }
+        else if (targetStage.StageKey == StageKeys.Accepted ||
+                 targetStage.StageKey == StageKeys.RejectedOffer)
+        {
+            // Full pipeline to Offer, then the terminal stage (Accepted or RejectedOffer)
+            foreach (var key in pipelineKeys)
+            {
+                pathKeys.Add(key);
+            }
+            pathKeys.Add(targetStage.StageKey);
+        }
+        else
+        {
+            throw new InvalidOperationException($"Unsupported stage key {targetStage.StageKey}");
+        }
+
+        // 3. Insert events in the chosen path order
+        foreach (var key in pathKeys)
+        {
+            if (!stagesByKey.TryGetValue(key, out var stage))
+                throw new InvalidOperationException($"Stage '{key}' not found in Stages table.");
+
             var eventRow = new ApplicationEvent_Row
             {
                 ApplicationId = newAppId,
@@ -79,13 +126,11 @@ public class TrackerService : ITrackerService
 
             var insertEventRequest = new InsertApplicationEventRequest(eventRow);
             await _dataAccess.ExecuteAsync(insertEventRequest);
-
-            if (stage.StageId == targetStage.StageId)
-                break;  // stop once we hit the chosen "final" stage
         }
 
         return newAppId;
     }
+
 
     // --------------------------------------------------
     // Stages
