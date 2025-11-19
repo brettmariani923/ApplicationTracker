@@ -40,11 +40,11 @@
 <!-- New Application Form -->
 <section>
     <h2>Add New Application</h2>
-    <!--Generates a form tag that will POST data to our CreateApplication method in our controller-->
+    <!--Generates a form tag that will POST data to our CreateApplication method in our dashboard controller-->
     <form asp-action="CreateApplication" method="post">
 
         <div>
-            <!-- generates a label based on the model property's display name-->
+            <!-- generates a label based on the model property's DisplayName-->
             <label asp-for="NewApplication.CompanyName"></label>
             <!-- generates a text input bound to Model.NewApplication.CompanyName. Basically tells MVC "bind the selected value to this property"-->
             <input asp-for="NewApplication.CompanyName" />
@@ -149,7 +149,7 @@
     (function () { 
         
             //iife = immediately invoked function expression, defines function then uses (); to call it right away
-            //this helps keep all variables (labels, counts, sankeyrows, etc) scoped inside this function, so they dont leak into the global window Object
+            //this helps keep all variables (labels, counts, sankeyrows, etc) scoped inside this function, so they dont leak into the global window Object (special top-level Object named window given by browser when it runs. it represents the browser window itself, the global scope, all top-level variables and functions, browser APIS it is the root Object of the javascript environment in a browser)
             //as well as helps avoid naming conflicts with other scripts
        
             // ----- Bar chart (FunnelStats) ----- 

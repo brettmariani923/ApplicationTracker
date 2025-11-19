@@ -1,5 +1,4 @@
 ﻿using ApplicationTracker.Application.Interfaces;
-using ApplicationTracker.Application.Requests;
 using ApplicationTracker.Application.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
