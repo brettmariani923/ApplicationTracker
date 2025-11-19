@@ -8,7 +8,7 @@ public class DashboardController : Controller
 {
     private readonly ITrackerService _tracker;
 
-    public DashboardController(ITrackerService tracker)
+    public DashboardController(ITrackerService tracker, Applications)
     {
         _tracker = tracker ?? throw new ArgumentNullException(nameof(tracker));
     }
