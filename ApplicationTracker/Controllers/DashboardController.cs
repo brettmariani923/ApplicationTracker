@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ApplicationTracker.Api.Controllers;
 
-// NOTE: MVC controller for Razor views
 public class DashboardController : Controller
 {
     private readonly ITrackerService _tracker;

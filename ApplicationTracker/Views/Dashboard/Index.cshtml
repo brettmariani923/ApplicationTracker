@@ -2,18 +2,25 @@
 @using Microsoft.AspNetCore.Mvc.Rendering
 @model TrackerDashboardViewModel
 
-@{
+@{ // because the javascript in this view cant directly read c# objects, we are going to searlize
+    // razor runs on the server, java runs on the browser, so in order to pass our c# data into javascript, we need to conver it into 
+    // a format javascript can understand, in this case json strings
+    //here we are setting up our labels and number counts for our bar charts
     Layout = null;
     ViewData["Title"] = "Application Tracker Dashboard";
 
     // Bar chart data (funnel stats)
+    //labels
     var labelsJson = System.Text.Json.JsonSerializer.Serialize(
         Model.FunnelStats.Select(s => s.DisplayName));
-
+    //barchar height
     var countsJson = System.Text.Json.JsonSerializer.Serialize(
         Model.FunnelStats.Select(s => s.ApplicationCount));
 
-    // Sankey data: each row is [From, To, Count]
+    //Sankey link definitions
+    // Here we are setting up a JSON list of connections between stages, with each row being [From stage, ToStage, and Count]
+    // this will be fed directly into the sankey diagram, which requires rows of data in exactly this set up
+    // For example ["Phone screen", "Interview", 2]
     var sankeyRowsJson = System.Text.Json.JsonSerializer.Serialize(
         Model.SankeyLinks.Select(l => new object[] { l.From, l.To, l.Count }));
 }
@@ -24,7 +31,6 @@
     <meta charset="utf-8" />
     <title>@ViewData["Title"]</title>
 
-    <!-- External CSS instead of inline <style> -->
     <link rel="stylesheet" href="~/css/dashboard.css" />
 </head>
 <body>
@@ -130,7 +136,7 @@
 
 <script>
     (function () {
-        // ----- Bar chart (FunnelStats) -----
+        // ----- Bar chart (FunnelStats) ----- 
         const labels = @Html.Raw(labelsJson);
         const counts = @Html.Raw(countsJson);
 
