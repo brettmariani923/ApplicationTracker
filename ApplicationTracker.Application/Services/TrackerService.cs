@@ -103,6 +103,7 @@ public class TrackerService : ITrackerService
         return targetStage;
     }
 
+    //This is telling us which of our stagekey values form the main ordered pipeline for our graph
     private static readonly string[] PipelineKeys =
     {
         StageKeys.Applied,
