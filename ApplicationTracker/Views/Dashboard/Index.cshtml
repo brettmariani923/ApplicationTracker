@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.Rendering
 @model TrackerDashboardViewModel
 
-@{ // because the javascript in this view cant directly read c# objects, we are going to searlize
+@{ // because the javascript in this view cant directly read c# objects, we are going to searlize our objects
     // razor runs on the server, java runs on the browser, so in order to pass our c# data into javascript, we need to conver it into 
     // a format javascript can understand, in this case json strings
     //here we are setting up our labels and number counts for our bar charts
@@ -40,7 +40,8 @@
 <!-- New Application Form -->
 <section>
     <h2>Add New Application</h2>
-    <!--Generates a form tag that will POST data to our CreateApplication method in our dashboard controller-->
+    <!--Generates a form tag that will POST data to our CreateApplication method in our dashboard controller. 
+    by using the mvc tag helper (<form asp-action="">), if you only specify asp-action, it posts to the current controller. sine the view is rendered in the dashboard controller, it will be good to go-->
     <form asp-action="CreateApplication" method="post">
 
         <div>
@@ -170,7 +171,8 @@
 
             data: {
                 labels: labels, //the x axis labels (ie. applied, phonescreen, etc)
-                datasets: [{ //array for datasets, we just have one though
+                datasets: [{ 
+                    //array for datasets, we just have one though
                     label: 'Applications (highest stage reached)', //name shown in chart legend
                     data: counts //y values for each bar (how many apps reached that stage)
                 }]

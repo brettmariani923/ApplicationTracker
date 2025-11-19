@@ -91,14 +91,26 @@ public class TrackerService : ITrackerService
             StringComparer.OrdinalIgnoreCase);
     }
 
+    private static Stage_Row FindTargetStage(IDictionary<string, Stage_Row> stagesByKey, int targetStageId)
+    {
+        var targetStage = stagesByKey
+            .Values
+            .FirstOrDefault(s => s.StageId == targetStageId);
+
+        if (targetStage is null)
+            throw new InvalidOperationException($"StageId {targetStageId} not found.");
+
+        return targetStage;
+    }
+
     private static readonly string[] PipelineKeys =
-{
-    StageKeys.Applied,
-    StageKeys.PhoneScreen,
-    StageKeys.TechnicalInterview,
-    StageKeys.OnSite,
-    StageKeys.Offer
-};
+    {
+        StageKeys.Applied,
+        StageKeys.PhoneScreen,
+        StageKeys.TechnicalInterview,
+        StageKeys.OnSite,
+        StageKeys.Offer
+    };
 
     private static List<string> BuildPathKeys(string targetStageKey)
     {
@@ -139,10 +151,7 @@ public class TrackerService : ITrackerService
         return pathKeys;
     }
 
-    private async Task InsertApplicationEventsAsync(
-    int applicationId,
-    IEnumerable<string> pathKeys,
-    IReadOnlyDictionary<string, Stage_Row> stagesByKey)
+    private async Task InsertApplicationEventsAsync(int applicationId, IEnumerable<string> pathKeys, IReadOnlyDictionary<string, Stage_Row> stagesByKey)
     {
         foreach (var key in pathKeys)
         {
@@ -160,19 +169,7 @@ public class TrackerService : ITrackerService
         }
     }
 
-    private static Stage_Row FindTargetStage(
-    IDictionary<string, Stage_Row> stagesByKey,
-    int targetStageId)
-    {
-        var targetStage = stagesByKey
-            .Values
-            .FirstOrDefault(s => s.StageId == targetStageId);
-
-        if (targetStage is null)
-            throw new InvalidOperationException($"StageId {targetStageId} not found.");
-
-        return targetStage;
-    }
+  
 
     // --------------------------------------------------
     // Stages
