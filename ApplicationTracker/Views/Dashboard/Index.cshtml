@@ -2,25 +2,16 @@
 @using Microsoft.AspNetCore.Mvc.Rendering
 @model DashboardViewModel
 
-@{ // because the javascript in this view cant directly read c# objects, we are going to searlize our objects
-    // razor runs on the server, java runs on the browser, so in order to pass our c# data into javascript, we need to conver it into 
-    // a format javascript can understand, in this case json strings
-    //here we are setting up our labels and number counts for our bar charts
+@{
     Layout = null;
     ViewData["Title"] = "Application Tracker Dashboard";
 
-    // Bar chart data (funnel stats)
-    //labels
     var labelsJson = System.Text.Json.JsonSerializer.Serialize(
         Model.FunnelStats.Select(s => s.DisplayName));
-    //barchar height
+
     var countsJson = System.Text.Json.JsonSerializer.Serialize(
         Model.FunnelStats.Select(s => s.ApplicationCount));
 
-    //Sankey link definitions
-    // Here we are setting up a JSON list of connections between stages, with each row being [From stage, ToStage, and Count]
-    // this will be fed directly into the sankey diagram, which requires rows of data in exactly this set up
-    // For example [From ="Phone screen", To ="Interview", Count =2]
     var sankeyRowsJson = System.Text.Json.JsonSerializer.Serialize(
         Model.SankeyLinks.Select(l => new object[] { l.From, l.To, l.Count }));
 }
@@ -30,26 +21,21 @@
 <head>
     <meta charset="utf-8" />
     <title>@ViewData["Title"]</title>
-
     <link rel="stylesheet" href="~/css/dashboard.css" />
 </head>
 <body>
 
 <h1>Application Tracker Dashboard</h1>
 
-<!-- New Application Form -->
+<!-- ADD NEW APPLICATION -->
 <section>
     <h2>Add New Application</h2>
-    <!--Generates a form tag that will POST data to our CreateApplication method in our dashboard controller. 
-    by using the mvc tag helper (<form asp-action="">), if you only specify asp-action, it posts to the current controller. sine the view is rendered in the dashboard controller, it will be good to go-->
+
     <form asp-action="CreateApplication" method="post">
 
         <div>
-            <!-- generates a label based on the model property's DisplayName-->
             <label asp-for="NewApplication.CompanyName"></label>
-            <!-- generates a text input bound to Model.NewApplication.CompanyName. Basically tells MVC "bind the selected value to this property"-->
             <input asp-for="NewApplication.CompanyName" />
-            <!-- this is so a client side validation message will appear if the field fails validation-->
             <span asp-validation-for="NewApplication.CompanyName" class="validation-error"></span>
         </div>
 
@@ -64,79 +50,80 @@
             <select asp-for="NewApplication.StageId"
                     asp-items="@(new SelectList(Model.Stages, "StageId", "DisplayName"))">
                 <option value="">-- Select stage --</option>
-                <!-- This part creates a drop down menu so the user can select the stage id-->
-                <!-- for each row in the drop down, it pulls the StageID which is the value attribute of the option, and the
-                DisplayName, which is the text the user sees-->
             </select>
             <span asp-validation-for="NewApplication.StageId" class="validation-error"></span>
-            <!-- more error messaging, but this time for the dropdown-->
-            
         </div>
 
         <button type="submit">Add Application</button>
-        <!-- submits the form, and mvc binds all fields into CreateApplicationRequest request.NewApplication in the controller-->
     </form>
 </section>
 
-<hr /> <!--a horizontal rule, this is just the line that separates the sections on the page-->
+<hr />
 
+<!-- FUNNEL CHART -->
 <h2>Applications by Highest Stage Reached</h2>
 <div class="chart-container">
     <canvas id="stageFunnelChart"></canvas>
-    <!-- Canvas element is required by Chart.js to draw the bar/funnel chart, the id lets javascript grab it-->
 </div>
 
 <hr />
 
+<!-- SANKEY CHART -->
 <h2>Application Flow (Sankey)</h2>
 <div id="sankey_chart" class="sankey-container"></div>
-<!-- where google charts will draw the sankey diagram-->
 
 <hr />
 
+<!-- TIMELINES -->
 <h2>Application Timelines</h2>
 
-<table> <!-- standard html table-->
-    <thead> <!-- the header rop (top of the table)-->
-    <tr> <!-- a table row-->
-        <th class="th-company">Company</th> <!-- th =header cells-->
-        <th class="th-jobtitle">Job Title</th>
-        <th class="th-timeline">Timeline</th>
-    </tr>
+<table>
+    <thead>
+        <tr>
+            <th class="th-company">Company</th>
+            <th class="th-jobtitle">Job Title</th>
+            <th class="th-timeline">Timeline</th>
+            <th class="th-actions">Actions</th>
+        </tr>
     </thead>
-    <tbody> <!-- actual data goes here-->
-    @if (!Model.Timelines.Any()) //checks if there are no timeline records
+
+    <tbody>
+    @if (!Model.Timelines.Any())
     {
         <tr>
-            <td colspan="3">No applications yet.</td> 
+            <td colspan="4">No applications yet.</td>
         </tr>
-    }//one cell that spans all 3 colums and shows message
-    else //otherwise loop through all application record in view models
+    }
+    else
     {
-        @foreach (var app in Model.Timelines)//output one row per application
+        foreach (var app in Model.Timelines)
         {
             <tr>
-                <td>@app.CompanyName
-                <td>@app.JobTitle
+                <td>@app.CompanyName</td>
+                <td>@app.JobTitle</td>
 
                 <td>
-                    <div class="timeline"> <!--drawing horizontal timeline for each apps history-->
-                        @for (int i = 0; i < app.Events.Count; i++) //iterates through each event for each specific application
+                    <div class="timeline">
+                        @for (int i = 0; i < app.Events.Count; i++)
                         {
-                            var ev = app.Events[i]; <!-- current event object, containing DisplayName, StageID, and Timestamps (might add later)-->
-
-                            <span class="stage-pill">@ev.DisplayName</span> <!-- makes the little pill for each stage-->
+                            var ev = app.Events[i];
+                            <span class="stage-pill">@ev.DisplayName</span>
 
                             if (i < app.Events.Count - 1)
                             {
-                                <span class="timeline-arrow">→</span> <!-- adds the arrows in between each stage pill-->
+                                <span class="timeline-arrow">→</span>
                             }
-                           
-                        } 
+                        }
                     </div>
                 </td>
-                <!--Delete button-->
-                <td><form asp-action="DeleteApplication" method="post" style="display:inline;">
+
+                <td>
+                    <form asp-action="UpdateApplication" method="get" style="display:inline;">
+                        <input type="hidden" name="id" value="@app.ApplicationId" />
+                        <button type="submit" class="edit-button">Update</button>
+                    </form>
+
+                    <form asp-action="DeleteApplication" method="post" style="display:inline;">
                         <input type="hidden" name="applicationId" value="@app.ApplicationId" />
                         <button type="submit" class="delete-button">Remove</button>
                     </form>
@@ -147,94 +134,95 @@
     </tbody>
 </table>
 
-<!-- Chart.js for the bar chart -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- EDIT APPLICATION FORM -->
+@if (Model.UpdateApplication != null)
+{
+    <hr />
+    <h2>Edit Application</h2>
 
-<!-- Google Charts for the Sankey diagram -->
+    <form asp-action="UpdateApplicationPost" method="post">
+
+        <!-- Hidden primary key -->
+        <input type="hidden" asp-for="UpdateApplication.ApplicationId" />
+
+        <div>
+            <label asp-for="UpdateApplication.CompanyName"></label>
+            <input asp-for="UpdateApplication.CompanyName" />
+            <span asp-validation-for="UpdateApplication.CompanyName" class="validation-error"></span>
+        </div>
+
+        <div>
+            <label asp-for="UpdateApplication.JobTitle"></label>
+            <input asp-for="UpdateApplication.JobTitle" />
+            <span asp-validation-for="UpdateApplication.JobTitle" class="validation-error"></span>
+        </div>
+
+        <div>
+            <label asp-for="UpdateApplication.StageId">Final Stage</label>
+            <select asp-for="UpdateApplication.StageId"
+                    asp-items="@(new SelectList(Model.Stages, "StageId", "DisplayName"))">
+                <option value="">-- Select stage --</option>
+            </select>
+
+            <span asp-validation-for="UpdateApplication.StageId" class="validation-error"></span>
+        </div>
+
+        <button type="submit">Save Changes</button>
+    </form>
+}
+
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script>
-    (function () { 
-        
-            //iife = immediately invoked function expression, defines function then uses (); to call it right away
-            //this helps keep all variables (labels, counts, sankeyrows, etc) scoped inside this function, so they dont leak into the global window Object (special top-level Object named window given by browser when it runs. it represents the browser window itself, the global scope, all top-level variables and functions, browser APIS it is the root Object of the javascript environment in a browser)
-            //as well as helps avoid naming conflicts with other scripts
-       
-            // ----- Bar chart (FunnelStats) ----- 
-        const labels = @Html.Raw(labelsJson); //our c# strings that we searlized from before, html.raw injects them into the javascript without html encoding SourceBuffer they become real javascript arrays
-        const counts = @Html.Raw(countsJson);
+(function () {
 
-        const ctx = document.getElementById('stageFunnelChart').getContext('2d');
+    // -------- BAR CHART --------
+    const labels = @Html.Raw(labelsJson);
+    const counts = @Html.Raw(countsJson);
 
-            // the ctx variable looks for the canvas id="stageFunnelChart" in our html from before, and gets its 2d drawing context, which chart.js uses to draw it
+    const ctx = document.getElementById('stageFunnelChart').getContext('2d');
 
-        new Chart(ctx, {
-
-            //Creates the bar chart using chart.js
-
-            type: 'bar',
-
-                //tells chart.js to make a barchart
-
-            data: {
-                labels: labels, //the x axis labels (ie. applied, phonescreen, etc)
-                datasets: [{ 
-                    //array for datasets, we just have one though
-                    label: 'Applications (highest stage reached)', //name shown in chart legend
-                    data: counts //y values for each bar (how many apps reached that stage)
-                }]
-
-                //So if labels = ["applied", "phonescreen"] and counts = [10, 3], we get 2 bars, one with 10 and one with 3
-            },
-            options: {
-                responsive: true, //chart resizes with the browser
-                scales: {
-                    y: {
-                        beginAtZero: true, //y axis starts at 0
-                        ticks: { precision: 0 } //y axis labels are whole numbers (no decimals)
-                    }
-                }
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Applications (highest stage reached)',
+                data: counts
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true, ticks: { precision: 0 } }
             }
-        });
-
-        // ----- Sankey diagram (SankeyLinks) -----
-        const sankeyRows = @Html.Raw(sankeyRowsJson);
-
-            //injection of C# generated JSON from before into Javascript
-
-        google.charts.load('current', { packages: ['sankey'] }); //loads google charts library (sankey chart)
-        google.charts.setOnLoadCallback(drawSankey); 
-        
-            //tells google charts, once everything is loaded draw the sankey function
-            //makes sure the decodeURI doesnt run before the library is ready
-
-        function drawSankey() {
-
-            // actually builds and draws the sankey chart
-
-            var data = new google.visualization.DataTable(); //creates a google data table object, which is like a typed table for charts
-            
-            data.addColumn('string', 'From');
-            data.addColumn('string', 'To');
-            data.addColumn('number', 'Count');
-
-            //in the above we set up our columns/ define our schema
-
-            data.addRows(sankeyRows); //adds all the rows from the JSON array to the dataTable
-
-            var options = {
-                height: 400 //chart height max 400px
-            };
-
-            var chart = new google.visualization.Sankey(
-                document.getElementById('sankey_chart'));
-
-                //looks for the div id="sankey_chart" in our html, instantiates a sankey chart object bound to that div
-
-            chart.draw(data, options);
-            //calls this last part to render the chart
         }
-    })();
+    });
+
+    // -------- SANKEY DIAGRAM --------
+    const sankeyRows = @Html.Raw(sankeyRowsJson);
+
+    google.charts.load('current', { packages: ['sankey'] });
+    google.charts.setOnLoadCallback(drawSankey);
+
+    function drawSankey() {
+        var data = new google.visualization.DataTable();
+
+        data.addColumn('string', 'From');
+        data.addColumn('string', 'To');
+        data.addColumn('number', 'Count');
+
+        data.addRows(sankeyRows);
+
+        var chart = new google.visualization.Sankey(
+            document.getElementById('sankey_chart'));
+
+        chart.draw(data, { height: 400 });
+    }
+
+})();
 </script>
 
 </body>

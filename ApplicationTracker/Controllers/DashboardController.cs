@@ -1,6 +1,7 @@
 ﻿using ApplicationTracker.Application.Interfaces;
 using ApplicationTracker.Application.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using ApplicationTracker.Data.Rows;
 
 namespace ApplicationTracker.Api.Controllers;
 
@@ -72,6 +73,57 @@ public class DashboardController : Controller
 
         return RedirectToAction(nameof(Index)); // PRG pattern
     }
+
+    [HttpGet]
+    public async Task<IActionResult> UpdateApplication(int id)
+    {
+        var app = await _applications.GetApplicationByIdAsync(id);
+
+        if (app == null)
+            return NotFound();
+
+        var vm = new DashboardViewModel
+        {
+            Timelines = await _timelines.GetApplicationTimelinesAsync(),
+            FunnelStats = await _funnel.GetStageFunnelAsync(),
+            SankeyLinks = await _sankey.GetSankeyLinksAsync(),
+            Stages = await _stages.GetAllStagesAsync(),
+
+            NewApplication = new CreateApplicationRequest(),
+            UpdateApplication = app
+        };
+
+        return View("Index", vm);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> UpdateApplicationPost(DashboardViewModel model)
+    {
+        var updated = model.UpdateApplication;
+
+        if (!ModelState.IsValid)
+        {
+            var vm = new DashboardViewModel
+            {
+                Timelines = await _timelines.GetApplicationTimelinesAsync(),
+                FunnelStats = await _funnel.GetStageFunnelAsync(),
+                SankeyLinks = await _sankey.GetSankeyLinksAsync(),
+                Stages = await _stages.GetAllStagesAsync(),
+
+                NewApplication = new CreateApplicationRequest(),
+                UpdateApplication = updated
+            };
+
+            return View("Index", vm);
+        }
+
+        await _applications.UpdateApplicationAsync(updated);
+
+        return RedirectToAction(nameof(Index));
+    }
+
+
+
 
 
 }

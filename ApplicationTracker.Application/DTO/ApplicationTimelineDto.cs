@@ -7,4 +7,5 @@ public class ApplicationTimelineDto
     public string? JobTitle { get; set; }
 
     public List<StageEventDto> Events { get; set; } = new();
+
 }

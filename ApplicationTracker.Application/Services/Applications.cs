@@ -6,6 +6,7 @@ using ApplicationTracker.Data.Requests.DeleteApplicationRequest;
 using ApplicationTracker.Data.Requests.InsertApplicationRequest;
 using ApplicationTracker.Data.Requests.InsertApplicationEventRequest;
 using ApplicationTracker.Data.Requests.ReturnAllStagesRequest;
+using ApplicationTracker.Data.Requests;
 using ApplicationTracker.Data.Rows;
 using ApplicationTracker.Domain.Constants;
 
@@ -173,5 +174,42 @@ namespace ApplicationTracker.Application.Services
             var request = new DeleteApplicationRequest(applicationId);
             await _dataAccess.ExecuteAsync(request);
         }
-    }   
+
+        public async Task UpdateApplicationAsync(Application_Row updated)
+        {
+            if (updated is null)
+                throw new ArgumentNullException(nameof(updated));
+
+            // 1. Load existing application data (including last stage)
+            var existing = await GetApplicationByIdAsync(updated.ApplicationId);
+            if (existing == null)
+                throw new InvalidOperationException($"Application {updated.ApplicationId} not found.");
+
+            // 2. Update Applications table (CompanyName / JobTitle only)
+            var updateRequest = new UpdateApplicationRequest(updated);
+            await _dataAccess.ExecuteAsync(updateRequest);
+
+            // 3. If the stage changed, add a new ApplicationEvent
+            if (updated.StageId != 0 && updated.StageId != existing.StageId)
+            {
+                var eventRow = new ApplicationEvent_Row
+                {
+                    ApplicationId = updated.ApplicationId,
+                    StageId = updated.StageId
+                };
+
+                var insertEventRequest = new InsertApplicationEventRequest(eventRow);
+                await _dataAccess.ExecuteAsync(insertEventRequest);
+            }
+        }
+
+
+        public async Task<Application_Row?> GetApplicationByIdAsync(int id)
+        {
+            var request = new ReturnApplicationByIdRequest(id);
+            var result = await _dataAccess.FetchAsync<Application_Row>(request);
+            return result;
+        }
+
+    }
 }
