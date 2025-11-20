@@ -46,7 +46,7 @@
         </div>
 
         <div>
-            <label asp-for="NewApplication.StageId">Final Stage</label>
+            <label asp-for="NewApplication.StageId">Application Stage</label>
             <select asp-for="NewApplication.StageId"
                     asp-items="@(new SelectList(Model.Stages, "StageId", "DisplayName"))">
                 <option value="">-- Select stage --</option>
@@ -61,7 +61,7 @@
 <hr />
 
 <!-- FUNNEL CHART -->
-<h2>Applications by Highest Stage Reached</h2>
+<h2>Applications by Stage Reached</h2>
 <div class="chart-container">
     <canvas id="stageFunnelChart"></canvas>
 </div>
@@ -125,7 +125,7 @@
 
                     <form asp-action="DeleteApplication" method="post" style="display:inline;">
                         <input type="hidden" name="applicationId" value="@app.ApplicationId" />
-                        <button type="submit" class="delete-button">Remove</button>
+                        <button type="submit" class="delete-button">Delete</button>
                     </form>
                 </td>
             </tr>
