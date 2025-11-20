@@ -1,7 +1,7 @@
 ﻿using ApplicationTracker.Data.Interfaces;
 using ApplicationTracker.Data.Rows;
 
-namespace ApplicationTracker.Data.Requests.Stages;
+namespace ApplicationTracker.Data.Requests.ReturnAllStagesRequest;
 
 public class ReturnAllStagesRequest : IDataFetchList<Stage_Row>
 {

@@ -1,6 +1,6 @@
 ﻿@using ApplicationTracker.Application.ViewModels
 @using Microsoft.AspNetCore.Mvc.Rendering
-@model TrackerDashboardViewModel
+@model DashboardViewModel
 
 @{ // because the javascript in this view cant directly read c# objects, we are going to searlize our objects
     // razor runs on the server, java runs on the browser, so in order to pass our c# data into javascript, we need to conver it into 
@@ -116,8 +116,9 @@
         @foreach (var app in Model.Timelines)//output one row per application
         {
             <tr>
-                <td>@app.CompanyName</td>
-                <td>@app.JobTitle</td>
+                <td>@app.CompanyName
+                <td>@app.JobTitle
+
                 <td>
                     <div class="timeline"> <!--drawing horizontal timeline for each apps history-->
                         @for (int i = 0; i < app.Events.Count; i++) //iterates through each event for each specific application
@@ -133,6 +134,11 @@
                            
                         } 
                     </div>
+                </td>
+                <td><form asp-action="DeleteApplication" method="post" style="display:inline;">
+                        <input type="hidden" name="applicationId" value="@app.ApplicationId" />
+                        <button type="submit" class="delete-button">Remove</button>
+                    </form>
                 </td>
             </tr>
         }

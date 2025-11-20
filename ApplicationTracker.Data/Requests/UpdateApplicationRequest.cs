@@ -1,7 +1,7 @@
 ﻿using ApplicationTracker.Data.Rows;
 using ApplicationTracker.Data.Interfaces;
 
-namespace ApplicationTracker.Data.Requests
+namespace ApplicationTracker.Data.Requests.UpdateApplicationRequest
 {
     public class UpdateApplicationRequest : IDataExecute
     {

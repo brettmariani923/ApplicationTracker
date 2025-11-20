@@ -2,7 +2,7 @@
 
 namespace ApplicationTracker.Application.ViewModels;
 
-public class TrackerDashboardViewModel
+public class DashboardViewModel
 {
     public List<ApplicationTimelineDto> Timelines { get; set; } = new();
     public List<StageStatsDto> FunnelStats { get; set; } = new();

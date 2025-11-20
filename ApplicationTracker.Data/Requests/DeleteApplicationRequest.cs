@@ -1,6 +1,6 @@
 ﻿using ApplicationTracker.Data.Interfaces;
 
-namespace ApplicationTracker.Data.Requests;
+namespace ApplicationTracker.Data.Requests.DeleteApplicationRequest;
 
 public class DeleteApplicationRequest : IDataExecute
 {

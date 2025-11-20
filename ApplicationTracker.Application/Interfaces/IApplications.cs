@@ -6,5 +6,7 @@ namespace ApplicationTracker.Application.Interfaces
     {
         Task<List<ApplicationDto>> GetAllApplicationsAsync();
         Task<int> InsertApplicationAsync(CreateApplicationRequest requestModel);
+        Task DeleteApplicationAsync(int applicationId);
+
     }
 }

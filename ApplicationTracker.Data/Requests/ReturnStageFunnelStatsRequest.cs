@@ -1,7 +1,7 @@
 ﻿using ApplicationTracker.Data.Interfaces;
 using ApplicationTracker.Data.Rows;
 
-namespace ApplicationTracker.Data.Requests.ApplicationEvents;
+namespace ApplicationTracker.Data.Requests.ReturnStageFunnelStatsRequest;
 
 public class ReturnStageFunnelStatsRequest : IDataFetchList<StageFunnelStat_Row>
 {

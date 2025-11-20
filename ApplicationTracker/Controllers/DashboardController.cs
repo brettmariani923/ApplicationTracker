@@ -30,7 +30,7 @@ public class DashboardController : Controller
         var sankey = await _sankey.GetSankeyLinksAsync();
         var stages = await _stages.GetAllStagesAsync();
 
-        var vm = new TrackerDashboardViewModel
+        var vm = new DashboardViewModel
         {
             Timelines = timelines,
             FunnelStats = funnel,
@@ -45,7 +45,7 @@ public class DashboardController : Controller
 
     // POST: /Dashboard/CreateApplication
     [HttpPost]
-    public async Task<IActionResult> CreateApplication(TrackerDashboardViewModel model)
+    public async Task<IActionResult> CreateApplication(DashboardViewModel model)
     {
         if (!ModelState.IsValid)
         {
@@ -64,6 +64,15 @@ public class DashboardController : Controller
         // PRG pattern to avoid repost on refresh and to reload charts
         return RedirectToAction(nameof(Index));
     }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteApplication(int applicationId)
+    {
+        await _applications.DeleteApplicationAsync(applicationId);
+
+        return RedirectToAction(nameof(Index)); // PRG pattern
+    }
+
 
 }
 

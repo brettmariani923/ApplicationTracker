@@ -1,7 +1,7 @@
 ﻿using ApplicationTracker.Data.Interfaces;
 using ApplicationTracker.Data.Rows;
 
-namespace ApplicationTracker.Data.Requests.Applications;
+namespace ApplicationTracker.Data.Requests.InsertApplicationRequest;
 
 public class InsertApplicationRequest : IDataFetch<int>
 {

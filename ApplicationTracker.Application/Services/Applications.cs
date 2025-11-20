@@ -1,15 +1,13 @@
 ﻿using ApplicationTracker.Application.DTO;
 using ApplicationTracker.Application.Interfaces;
-using ApplicationTracker.Application.Requests;
-using ApplicationTracker.Application.ViewModels;
 using ApplicationTracker.Data.Interfaces;
-using ApplicationTracker.Data.Requests.Applications;
-using ApplicationTracker.Data.Requests.ApplicationEvents;
-using ApplicationTracker.Data.Requests.Stages;
+using ApplicationTracker.Data.Requests.ReturnAllApplicationsRequest;
+using ApplicationTracker.Data.Requests.DeleteApplicationRequest;
+using ApplicationTracker.Data.Requests.InsertApplicationRequest;
+using ApplicationTracker.Data.Requests.InsertApplicationEventRequest;
+using ApplicationTracker.Data.Requests.ReturnAllStagesRequest;
 using ApplicationTracker.Data.Rows;
 using ApplicationTracker.Domain.Constants;
-
-
 
 namespace ApplicationTracker.Application.Services
 {
@@ -58,7 +56,6 @@ namespace ApplicationTracker.Application.Services
 
             return newAppId;
         }
-
 
         private async Task<int> InsertApplicationCoreAsync(CreateApplicationRequest requestModel)
         {
@@ -112,7 +109,7 @@ namespace ApplicationTracker.Application.Services
         StageKeys.TechnicalInterview,
         StageKeys.OnSite,
         StageKeys.Offer
-    };
+        };
 
         private static List<string> BuildPathKeys(string targetStageKey)
         {
@@ -171,5 +168,10 @@ namespace ApplicationTracker.Application.Services
             }
         }
 
-    }
+        public async Task DeleteApplicationAsync(int applicationId)
+        {
+            var request = new DeleteApplicationRequest(applicationId);
+            await _dataAccess.ExecuteAsync(request);
+        }
+    }   
 }
