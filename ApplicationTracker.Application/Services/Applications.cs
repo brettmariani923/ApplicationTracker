@@ -13,7 +13,7 @@ using ApplicationTracker.Domain.Constants;
 
 namespace ApplicationTracker.Application.Services
 {
-    public class Applications
+    public class Applications : IApplications
     {
         private readonly IDataAccess _dataAccess;
 

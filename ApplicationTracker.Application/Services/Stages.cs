@@ -12,7 +12,7 @@ using ApplicationTracker.Domain.Constants;
 
 namespace ApplicationTracker.Application.Services
 {
-    public class Stages
+    public class Stages : IStages
     {
         private readonly IDataAccess _dataAccess;
 

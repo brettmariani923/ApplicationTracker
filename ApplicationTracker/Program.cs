@@ -15,7 +15,12 @@ builder.Services.AddSingleton<IDbConnectionFactory>(_ =>
     new SqlConnectionFactory(connectionString));
 
 builder.Services.AddScoped<IDataAccess, DataAccess>();
-builder.Services.AddScoped<ITrackerService, TrackerService>();
+builder.Services.AddScoped<IApplications, Applications>();
+builder.Services.AddScoped<IEvents, Events>();
+builder.Services.AddScoped<IFunnel, Funnel>();
+builder.Services.AddScoped<ISankeyLinks, SankeyLinks>();
+builder.Services.AddScoped<IStages, Stages>();
+builder.Services.AddScoped<ITimelines, Timelines>();
 
 var app = builder.Build();
 

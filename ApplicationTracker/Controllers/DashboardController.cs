@@ -6,20 +6,29 @@ namespace ApplicationTracker.Api.Controllers;
 
 public class DashboardController : Controller
 {
-    private readonly ITrackerService _tracker;
+    private readonly IApplications _applications;
+    private readonly IFunnel _funnel;
+    private readonly ISankeyLinks _sankey;
+    private readonly IStages _stages;
+    private readonly ITimelines _timelines;
 
-    public DashboardController(ITrackerService tracker, Applications)
+    public DashboardController(IApplications applications, IFunnel funnel, ISankeyLinks sankey, IStages stages, ITimelines timelines)
     {
-        _tracker = tracker ?? throw new ArgumentNullException(nameof(tracker));
+        _applications = applications ?? throw new ArgumentNullException(nameof(applications));
+        _funnel = funnel ?? throw new ArgumentNullException(nameof(funnel));
+        _sankey = sankey ?? throw new ArgumentNullException(nameof(sankey));
+        _stages = stages ?? throw new ArgumentNullException(nameof(stages));
+        _timelines = timelines ?? throw new ArgumentNullException(nameof(timelines));
+
     }
 
     // GET: /Dashboard
     public async Task<IActionResult> Index()
     {
-        var timelines = await _tracker.GetApplicationTimelinesAsync();
-        var funnel = await _tracker.GetStageFunnelAsync();
-        var sankey = await _tracker.GetSankeyLinksAsync();
-        var stages = await _tracker.GetAllStagesAsync();
+        var timelines = await _timelines.GetApplicationTimelinesAsync();
+        var funnel = await _funnel.GetStageFunnelAsync();
+        var sankey = await _sankey.GetSankeyLinksAsync();
+        var stages = await _stages.GetAllStagesAsync();
 
         var vm = new TrackerDashboardViewModel
         {
@@ -36,22 +45,21 @@ public class DashboardController : Controller
 
     // POST: /Dashboard/CreateApplication
     [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateApplication(TrackerDashboardViewModel model)
     {
         if (!ModelState.IsValid)
         {
             // reload analytics + stages so the view can render again
-            model.Timelines = await _tracker.GetApplicationTimelinesAsync();
-            model.FunnelStats = await _tracker.GetStageFunnelAsync();
-            model.SankeyLinks = await _tracker.GetSankeyLinksAsync();
-            model.Stages = await _tracker.GetAllStagesAsync();
+            model.Timelines = await _timelines.GetApplicationTimelinesAsync();
+            model.FunnelStats = await _funnel.GetStageFunnelAsync();
+            model.SankeyLinks = await _sankey.GetSankeyLinksAsync();
+            model.Stages = await _stages.GetAllStagesAsync();
 
             return View("Index", model);
         }
 
         // iinsert Application + ApplicationEvent
-        await _tracker.InsertApplicationAsync(model.NewApplication);
+        await _applications.InsertApplicationAsync(model.NewApplication);
 
         // PRG pattern to avoid repost on refresh and to reload charts
         return RedirectToAction(nameof(Index));

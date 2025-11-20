@@ -12,7 +12,7 @@ using ApplicationTracker.Domain.Constants;
 
 namespace ApplicationTracker.Application.Services
 {
-    public class SankeyLinks
+    public class SankeyLinks : ISankeyLinks
     {
         private readonly IDataAccess _dataAccess;
 
@@ -71,4 +71,4 @@ namespace ApplicationTracker.Application.Services
 
     }
 }
-}
+

@@ -9,11 +9,9 @@ using ApplicationTracker.Data.Requests.Stages;
 using ApplicationTracker.Data.Rows;
 using ApplicationTracker.Domain.Constants;
 
-
-
 namespace ApplicationTracker.Application.Services
 {
-    public class Timelines
+    public class Timelines : ITimelines
     {
         private readonly IDataAccess _dataAccess;
 

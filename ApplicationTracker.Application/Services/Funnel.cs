@@ -12,7 +12,7 @@ using ApplicationTracker.Domain.Constants;
 
 namespace ApplicationTracker.Application.Services
 {
-    public class Funnel
+    public class Funnel : IFunnel
     {
         private readonly IDataAccess _dataAccess;
 
