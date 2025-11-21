@@ -43,6 +43,21 @@ public class DashboardController : Controller
         return View(vm);
     }
 
+    // Get: /Timeline
+    public async Task<IActionResult> Timeline()
+    {
+        var timelines = await _timelines.GetApplicationTimelinesAsync();
+        var stages = await _stages.GetAllStagesAsync();
+
+        var vm = new DashboardViewModel
+        {
+            Timelines = timelines,
+            Stages = stages
+        };
+
+        return View(vm);
+    }
+
 
     // POST: /Dashboard/CreateApplication
     [HttpPost]
@@ -93,7 +108,7 @@ public class DashboardController : Controller
             UpdateApplication = app
         };
 
-        return View("Index", vm);
+        return View("Timeline", vm);
     }
 
     [HttpPost]
@@ -114,7 +129,7 @@ public class DashboardController : Controller
                 UpdateApplication = updated
             };
 
-            return View("Index", vm);
+            return View("Timeline", vm);
         }
 
         await _applications.UpdateApplicationAsync(updated);

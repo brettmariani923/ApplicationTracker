@@ -3,7 +3,6 @@
 @model DashboardViewModel
 
 @{
-    Layout = null;
     ViewData["Title"] = "Application Tracker Dashboard";
 
     var labelsJson = System.Text.Json.JsonSerializer.Serialize(
@@ -83,7 +82,8 @@
             <th class="th-company">Company</th>
             <th class="th-jobtitle">Job Title</th>
             <th class="th-timeline">Timeline</th>
-            <th class="th-actions">Actions</th>
+            <th class="th-actions"></th>
+            <th class="th-actions"></th>
         </tr>
     </thead>
 
@@ -91,7 +91,7 @@
     @if (!Model.Timelines.Any())
     {
         <tr>
-            <td colspan="4">No applications yet.</td>
+            <td colspan="5">No applications yet.</td>
         </tr>
     }
     else
@@ -122,7 +122,8 @@
                         <input type="hidden" name="id" value="@app.ApplicationId" />
                         <button type="submit" class="edit-button">Update</button>
                     </form>
-
+                </td>
+                <td>
                     <form asp-action="DeleteApplication" method="post" style="display:inline;">
                         <input type="hidden" name="applicationId" value="@app.ApplicationId" />
                         <button type="submit" class="delete-button">Delete</button>

@@ -1,0 +1,125 @@
+﻿@using ApplicationTracker.Application.ViewModels
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model DashboardViewModel
+
+@{
+    ViewData["Title"] = "Application Tracker Dashboard";
+
+    var labelsJson = System.Text.Json.JsonSerializer.Serialize(
+        Model.FunnelStats.Select(s => s.DisplayName));
+
+    var countsJson = System.Text.Json.JsonSerializer.Serialize(
+        Model.FunnelStats.Select(s => s.ApplicationCount));
+
+    var sankeyRowsJson = System.Text.Json.JsonSerializer.Serialize(
+        Model.SankeyLinks.Select(l => new object[] { l.From, l.To, l.Count }));
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/dashboard.css" />
+</head>
+
+<!-- EDIT APPLICATION FORM -->
+@if (Model.UpdateApplication != null)
+{
+    <hr />
+    <h2>Edit Application</h2>
+
+    <form asp-action="UpdateApplicationPost" method="post">
+
+        <!-- Hidden primary key -->
+        <input type="hidden" asp-for="UpdateApplication.ApplicationId" />
+
+        <div>
+            <label asp-for="UpdateApplication.CompanyName"></label>
+            <input asp-for="UpdateApplication.CompanyName" />
+            <span asp-validation-for="UpdateApplication.CompanyName" class="validation-error"></span>
+        </div>
+
+        <div>
+            <label asp-for="UpdateApplication.JobTitle"></label>
+            <input asp-for="UpdateApplication.JobTitle" />
+            <span asp-validation-for="UpdateApplication.JobTitle" class="validation-error"></span>
+        </div>
+
+        <div>
+            <label asp-for="UpdateApplication.StageId">Final Stage</label>
+            <select asp-for="UpdateApplication.StageId"
+            asp-items="@(new SelectList(Model.Stages, "StageId", "DisplayName"))">
+                <option value="">-- Select stage --</option>
+            </select>
+
+            <span asp-validation-for="UpdateApplication.StageId" class="validation-error"></span>
+        </div>
+
+        <button type="submit">Save Changes</button>
+    </form>
+}
+<h2>Application Timelines</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th class="th-company">Company</th>
+            <th class="th-jobtitle">Job Title</th>
+            <th class="th-timeline">Timeline</th>
+            <th class="th-actions"></th>
+            <th class="th-actions"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+    @if (!Model.Timelines.Any())
+    {
+        <tr>
+            <td colspan="5">No applications yet.</td>
+        </tr>
+    }
+    else
+    {
+        foreach (var app in Model.Timelines)
+        {
+            <tr>
+                <td>@app.CompanyName</td>
+                <td>@app.JobTitle</td>
+
+                <td>
+                    <div class="timeline">
+                        @for (int i = 0; i < app.Events.Count; i++)
+                        {
+                            var ev = app.Events[i];
+                            <span class="stage-pill">@ev.DisplayName</span>
+
+                            if (i < app.Events.Count - 1)
+                            {
+                                <span class="timeline-arrow">→</span>
+                            }
+                        }
+                    </div>
+                </td>
+
+                <td>
+                    <form asp-action="UpdateApplication" method="get" style="display:inline;">
+                        <input type="hidden" name="id" value="@app.ApplicationId" />
+                        <button type="submit" class="edit-button">Update</button>
+                    </form>
+                </td>
+                <td>
+                    <form asp-action="DeleteApplication" method="post" style="display:inline;">
+                        <input type="hidden" name="applicationId" value="@app.ApplicationId" />
+                        <button type="submit" class="delete-button">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
+
+</html>
+
+

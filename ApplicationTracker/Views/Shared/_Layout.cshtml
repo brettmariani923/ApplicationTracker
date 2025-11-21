@@ -1,30 +1,55 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>@ViewData["Title"] - Application Tracker</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <meta charset="utf-8" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+    <title>@ViewData["Title"] - ApplicationTracker</title> 
+
+    <link rel="stylesheet" href="~/css/site.css" /> 
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> <!-- loads bootstrap CSS-->
 </head>
+
 <body>
+  
     <header>
-        <h1>Application Tracker</h1>
-        <nav>
-            <a asp-controller="Dashboard" asp-action="Index">Dashboard</a>
-            <!-- add more links later -->
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Dashboard" asp-action="Index">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngkey.com%2Fpng%2Fdetail%2F15-159372_home-icon-png-white-graphic-transparent-download-home.png&f=1&nofb=1&ipt=bf5dfe76fd7097507ebe1fb25322558c113eab349030786901fd546bbf6e50c0""  />
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#mainNav" aria-controls="mainNav"
+                        aria-expanded="false">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div id="mainNav" class="collapse navbar-collapse">
+
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Dashboard" asp-action="Timeline">Timelines</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </nav>
-        <hr />
     </header>
 
-    <main class="container">
+    <main class="container my-4">
         @RenderBody()
     </main>
 
-    <footer>
-        <hr />
-        <p>&copy; @DateTime.Now.Year - Application Tracker</p>
+    <footer class="border-top py-3 text-muted">
+        <div class="container">
+            © @DateTime.Now.Year - Brett Mariani
+        </div>
     </footer>
 
-    @RenderSection("Scripts", required: false)
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  
 </body>
 </html>

@@ -63,3 +63,5 @@ TO DO:
 Set up interfaces for new service classes
 
 Add Update button
+
+probably should move application timelines to a separate view, for when it really starts to pile up
