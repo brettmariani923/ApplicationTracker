@@ -15,41 +15,31 @@
         Model.SankeyLinks.Select(l => new object[] { l.From, l.To, l.Count }));
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="~/css/dashboard.css" />
-</head>
-
 <!-- EDIT APPLICATION FORM -->
 @if (Model.UpdateApplication != null)
 {
-    <hr />
-    <h2>Edit Application</h2>
+    <h2 class="bluebox2"><strong>Update Application </strong></h2>
 
-    <form asp-action="UpdateApplicationPost" method="post">
+    <form asp-action="UpdateApplicationPost" method="post" class="red-box">
 
         <!-- Hidden primary key -->
         <input type="hidden" asp-for="UpdateApplication.ApplicationId" />
 
         <div>
-            <label asp-for="UpdateApplication.CompanyName"></label>
+            <label asp-for="UpdateApplication.CompanyName"><strong>Company Name</strong></label>
             <input asp-for="UpdateApplication.CompanyName" />
             <span asp-validation-for="UpdateApplication.CompanyName" class="validation-error"></span>
         </div>
 
         <div>
-            <label asp-for="UpdateApplication.JobTitle"></label>
+            <label asp-for="UpdateApplication.JobTitle"><strong>Job Title</strong></label>
             <input asp-for="UpdateApplication.JobTitle" />
             <span asp-validation-for="UpdateApplication.JobTitle" class="validation-error"></span>
         </div>
 
         <div>
-            <label asp-for="UpdateApplication.StageId">Final Stage</label>
             <select asp-for="UpdateApplication.StageId"
-            asp-items="@(new SelectList(Model.Stages, "StageId", "DisplayName"))">
+                    asp-items="@(new SelectList(Model.Stages, "StageId", "DisplayName"))">
                 <option value="">-- Select stage --</option>
             </select>
 
@@ -59,7 +49,16 @@
         <button type="submit">Save Changes</button>
     </form>
 }
-<h2>Application Timelines</h2>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/dashboard.css" />
+</head>
+<!-- TIMELINES -->
+<h2 class="home-hero lightbluebox">Application Timelines</h2>
 
 <table>
     <thead>
@@ -72,7 +71,7 @@
         </tr>
     </thead>
 
-    <tbody>
+    <tbody style="background-color: aliceblue">
     @if (!Model.Timelines.Any())
     {
         <tr>
@@ -119,7 +118,9 @@
     }
     </tbody>
 </table>
-
 </html>
+
+
+
 
 

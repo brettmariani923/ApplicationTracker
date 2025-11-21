@@ -112,7 +112,7 @@
     align-items: center; /* horizontal centering */
     justify-content: center; /* vertical centering (optional) */
     gap: 5px; /* space between fields */
-    background-color: lavender
+    background-color: white
 }
 
     /* Make labels + inputs stack nicely */
@@ -120,7 +120,7 @@
         display: flex;
         flex-direction: column;
         width: 100%;
-        max-width: 50px; /* keeps it from stretching too wide */
+        max-width: 300px; /* keeps it from stretching too wide */
         text-align: center;
         align-items: center; /* horizontal centering */
         justify-content: center;
@@ -142,7 +142,18 @@
     border-radius: 8px;
     max-width: 800px;
     margin: 1.5rem auto;
+    text-align: center;
     background-color:lavender;
+}
+
+.bluebox2 {
+    border: 2px solid blue;
+    padding: 16px;
+    border-radius: 8px;
+    max-width: 500px;
+    margin: 1.5rem auto;
+    text-align: center;
+    background-color: lavender;
 }
 
 .orangebox{
@@ -151,7 +162,7 @@
     border-radius: 8px;
     max-width: 500px;
     margin: 1.5rem auto;
-    background-color: lavender;
+    background-color: snow;
 }
 
 .lightbluebox {
@@ -169,16 +180,15 @@
     border-radius: 8px;
     max-width: 500px;
     margin: 1.5rem auto;
-    background-color: cornsilk;
+    background-color: snow;
 }
-
-
 
 .greenbox {
     border: 2px solid lightgreen;
     padding: 16px;
     border-radius: 8px;
     max-width: 500px;
+    text-align:center;
     margin: 1.5rem auto;
     background-color: azure
 }
