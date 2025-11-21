@@ -60,8 +60,9 @@ Sankey graph will work best for what i want
 
 TO DO:
 
-Set up interfaces for new service classes
+Set up interfaces for new service classesx
 
-Add Update button
+Add Update buttonx
+probably should move application timelines to a separate view, for when it really starts to pile upx
 
-probably should move application timelines to a separate view, for when it really starts to pile up
+fix nav bar at the top
