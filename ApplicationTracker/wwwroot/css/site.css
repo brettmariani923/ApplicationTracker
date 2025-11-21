@@ -17,43 +17,6 @@
     margin-bottom: 1rem;
 }
 
-/* Center an image block without extra utilities */
-.center-block {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* Sprite row on the homepage */
-.sprite-row {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    gap: 20px;
-    margin-bottom: 3rem;
-}
-
-.sprite-box {
-    text-align: center;
-}
-
-.sprite-img {
-    width: 96px;
-    height: 96px;
-    image-rendering: pixelated;
-    object-fit: contain;
-}
-
-.sprite-placeholder {
-    width: 96px;
-    height: 96px;
-    border: 1px dashed #ccc;
-    display: inline-block;
-}
-
-
-/* Current Team */
-/* Layout & card */
 .team-wrap {
     /* center the red box */
     display: flex;
@@ -61,57 +24,6 @@
     align-items: flex-start;
     width: 100%;
     margin: 1.5rem 0;
-}
-
-.team-card {
-    /* red border box that expands with table */
-    border: 3px solid red;
-    border-radius: 8px;
-    /* allow full table width without cutting off */
-    display: inline-block;
-    width: max-content; /* expands to fit table */
-    max-width: 100%; /* prevents overflow off screen */
-    overflow-x: auto; /* allows scroll if too wide */
-    padding: 16px; /* maintains inner spacing */
-    background-color: #fff; /* optional for clarity */
-}
-
-/* Table */
-.team-table {
-    display: inline-table; /* aligns size to table content */
-    width: auto !important; /* prevent 100% Bootstrap override */
-    margin: 0 auto;
-    border-collapse: collapse;
-}
-
-    .team-table th,
-    .team-table td {
-        text-align: center;
-        vertical-align: middle;
-    }
-
-.team-col-slot {
-    width: 5px;
-}
-
-.team-col-name {
-    width: 120px;
-}
-
-.team-col-sprite {
-    width: 90px;
-}
-
-.team-col-actions {
-    width: auto; /* auto instead of fixed width */
-    min-width: 220px; /* keeps controls from getting crushed */
-}
-
-/* Sprites */
-.poke-sprite {
-    width: 72px;
-    height: 72px;
-    object-fit: contain;
 }
 
 /* Actions row (flex bundle) */
@@ -146,13 +58,6 @@
     min-width: max-content; /* fit its label without wrapping */
     max-height: 32px;
     line-height: 32px;
-}
-
-.team-add {
-    max-width: 600px;
-    width: 100%;
-    display: flex;
-    justify-content: center; /* center the Add button row if used outside table */
 }
 
     .team-add .btn-compact {
@@ -195,18 +100,87 @@
     }
 }
 
-
-
-
-/* Enter name (Search) */
-/* Generic container styling for red-box sections */
 .red-box {
     border: 2px solid red;
     padding: 16px;
     border-radius: 8px;
-    max-width: 480px;
+    max-width: 350px;
     margin: 1.5rem auto;
-    background-color: #fff;
+    /* Center contents */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* horizontal centering */
+    justify-content: center; /* vertical centering (optional) */
+    gap: 5px; /* space between fields */
+    background-color: lavender
+}
+
+    /* Make labels + inputs stack nicely */
+    .red-box div {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 50px; /* keeps it from stretching too wide */
+        text-align: center;
+        align-items: center; /* horizontal centering */
+        justify-content: center;
+    }
+
+
+.red-box1 {
+    border: 2px solid red;
+    padding: 16px;
+    border-radius: 8px;
+    max-width: 800px;
+    margin: 1.5rem;
+    background-color: white;
+}
+
+.bluebox{
+    border: 2px solid blue;
+    padding:16px;
+    border-radius: 8px;
+    max-width: 800px;
+    margin: 1.5rem auto;
+    background-color:lavender;
+}
+
+.orangebox{
+    border: 2px solid orange;
+    padding: 16px;
+    border-radius: 8px;
+    max-width: 500px;
+    margin: 1.5rem auto;
+    background-color: lavender;
+}
+
+.lightbluebox {
+    border: 2px solid turquoise;
+    padding: 16px;
+    border-radius: 8px;
+    max-width: 500px;
+    margin: 1.5rem auto;
+    background-color: azure
+}
+
+.yellowbox {
+    border: 2px solid gold;
+    padding: 16px;
+    border-radius: 8px;
+    max-width: 500px;
+    margin: 1.5rem auto;
+    background-color: cornsilk;
+}
+
+
+
+.greenbox {
+    border: 2px solid lightgreen;
+    padding: 16px;
+    border-radius: 8px;
+    max-width: 500px;
+    margin: 1.5rem auto;
+    background-color: azure
 }
 
 /* Compact form layout */
@@ -260,4 +234,12 @@ main {
 /* Optional: theme accent box shadow for navbar */
 .box-shadow {
     box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+body {
+    background-image: url('/images/space2.jpg');
+    background-size: contain; /* make it fill the page */
+    background-repeat: repeat; /* prevent tiling */
+    background-attachment: fixed; /* nice parallax effect */
+    background-position: center;
 }

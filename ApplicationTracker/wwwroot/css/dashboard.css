@@ -61,14 +61,24 @@ th {
     font-size: 0.9rem;
 }
 
-.chart-container {
-    max-width: 800px;
-}
-
+/* Responsive chart containers */
+.chart-container,
 .sankey-container {
     width: 100%;
     max-width: 900px;
-    height: 400px;
+    margin: 0 auto;
+}
+
+/* Bar chart */
+#stageFunnelChart {
+    width: 100% !important;
+    height: 300px !important;
+}
+
+/* Sankey chart — responsive */
+#sankey_chart {
+    width: 100%;
+    display: block;
 }
 
 form div {
