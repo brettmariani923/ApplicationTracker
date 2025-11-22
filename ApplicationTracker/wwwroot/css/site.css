@@ -101,7 +101,7 @@
 }
 
 .red-box {
-    border: 2px solid red;
+    border: 2px solid teal;
     padding: 16px;
     border-radius: 8px;
     max-width: 350px;
@@ -126,9 +126,21 @@
         justify-content: center;
     }
 
-
+.red-box2 {
+    border: 2px solid teal;
+    padding: 16px;
+    border-radius: 8px;
+    max-width: 800px;
+    margin: 1.5rem auto;
+    /* Center contents */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* horizontal centering */
+    justify-content: center; /* vertical centering (optional) */
+    background-color: white
+}
 .red-box1 {
-    border: 2px solid red;
+    border: 2px solid teal;
     padding: 16px;
     border-radius: 8px;
     max-width: 800px;
@@ -160,7 +172,7 @@
     border: 2px solid orange;
     padding: 16px;
     border-radius: 8px;
-    max-width: 500px;
+    max-width: 300px;
     margin: 1.5rem auto;
     background-color: snow;
 }
@@ -169,7 +181,7 @@
     border: 2px solid turquoise;
     padding: 16px;
     border-radius: 8px;
-    max-width: 500px;
+    max-width: 350px;
     margin: 1.5rem auto;
     background-color: azure
 }
@@ -180,14 +192,14 @@
     border-radius: 8px;
     max-width: 500px;
     margin: 1.5rem auto;
-    background-color: snow;
+    background-color: white;
 }
 
 .greenbox {
     border: 2px solid lightgreen;
     padding: 16px;
     border-radius: 8px;
-    max-width: 500px;
+    max-width: 470px;
     text-align:center;
     margin: 1.5rem auto;
     background-color: azure

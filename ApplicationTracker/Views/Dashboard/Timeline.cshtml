@@ -19,7 +19,6 @@
 @if (Model.UpdateApplication != null)
 {
     <h2 class="bluebox2"><strong>Update Application </strong></h2>
-
     <form asp-action="UpdateApplicationPost" method="post" class="red-box">
 
         <!-- Hidden primary key -->
@@ -59,7 +58,7 @@
 </head>
 <!-- TIMELINES -->
 <h2 class="home-hero lightbluebox">Application Timelines</h2>
-
+<div class="red-box2">
 <table>
     <thead>
         <tr>
@@ -118,6 +117,7 @@
     }
     </tbody>
 </table>
+</div>
 </html>
 
 

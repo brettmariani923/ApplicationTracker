@@ -32,13 +32,13 @@
     <form asp-action="CreateApplication" method="post" class="red-box" >
 
         <div>
-            <label asp-for="NewApplication.CompanyName"></label>
+            <label asp-for="NewApplication.CompanyName"><strong>Company Name</strong></label>
             <input asp-for="NewApplication.CompanyName" />
             <span asp-validation-for="NewApplication.CompanyName" class="validation-error"></span>
         </div>
 
         <div>
-            <label asp-for="NewApplication.JobTitle"></label>
+            <label asp-for="NewApplication.JobTitle"><strong>Job Title</strong></label>
             <input asp-for="NewApplication.JobTitle" />
             <span asp-validation-for="NewApplication.JobTitle" class="validation-error"></span>
         </div>
@@ -46,7 +46,7 @@
         <div>
             <select asp-for="NewApplication.StageId"
                     asp-items="@(new SelectList(Model.Stages, "StageId", "DisplayName"))">
-                <option value="">-- Select stage --</option>
+                <option value=""> -- Select Stage --</option>
             </select>
             <span asp-validation-for="NewApplication.StageId" class="validation-error"></span>
         </div>
@@ -77,7 +77,7 @@
 
 <!-- TIMELINES -->
 <h2 class="home-hero lightbluebox">Application Timelines</h2>
-
+<div class="red-box2">
 <table>
     <thead>
         <tr>
@@ -136,6 +136,7 @@
     }
     </tbody>
 </table>
+</div>
 
 <!-- EDIT APPLICATION FORM -->
 @if (Model.UpdateApplication != null)
