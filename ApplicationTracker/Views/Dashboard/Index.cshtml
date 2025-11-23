@@ -16,229 +16,192 @@
 }
 
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/css/dashboard.css" />
 </head>
-<body>
-<div style="text-align: center;">
-    <h1 class="home-hero bluebox"><strong>Application Tracker Dashboard</strong></h1>
+
+    <body>
+    <div style="text-align: center;">
+        <h1 class="home-hero bluebox"><strong>Application Tracker Dashboard</strong></h1>
+        <p>.</p>
+    </div>
+
+    <!-- ADD NEW APPLICATION -->
+    <section>
+        <h2 class="home-hero textbox">Add New Application</h2>
+
+        <form asp-action="CreateApplication" method="post" class="tealbox" >
+
+            <div>
+                <label asp-for="NewApplication.CompanyName"><strong>Company Name</strong></label>
+                <input asp-for="NewApplication.CompanyName" />
+                <span asp-validation-for="NewApplication.CompanyName" class="validation-error"></span>
+            </div>
+
+            <div>
+                <label asp-for="NewApplication.JobTitle"><strong>Job Title</strong></label>
+                <input asp-for="NewApplication.JobTitle" />
+                <span asp-validation-for="NewApplication.JobTitle" class="validation-error"></span>
+            </div>
+
+            <div>
+                <select asp-for="NewApplication.StageId"
+                        asp-items="@(new SelectList(Model.Stages, "StageId", "DisplayName"))">
+                    <option value=""> -- Select Stage --</option>
+                </select>
+                <span asp-validation-for="NewApplication.StageId" class="validation-error"></span>
+            </div>
+
+            <button type="submit">Add Application</button>
+        </form>
+    </section>
     <p>.</p>
-</div>
 
+    <!-- FUNNEL CHART -->
+    <h2 class="home-hero textbox">Applications by Stage Reached</h2>
+    <div class="chart-container tealbox1">
+        <canvas id="stageFunnelChart"></canvas>
+    </div>
+    <p>.</p>
+    <hr />
 
-<!-- ADD NEW APPLICATION -->
-<section>
-    <h2 class="home-hero textbox">Add New Application</h2>
+    <!-- SANKEY CHART -->
+    <h2 class="home-hero textbox">Application Flow </h2>
+    <div class="sankey-container tealbox1">
+        <div id="sankey_chart"></div>
+    </div>
+    <p>.</p>
 
-    <form asp-action="CreateApplication" method="post" class="tealbox" >
+    <hr />
 
-        <div>
-            <label asp-for="NewApplication.CompanyName"><strong>Company Name</strong></label>
-            <input asp-for="NewApplication.CompanyName" />
-            <span asp-validation-for="NewApplication.CompanyName" class="validation-error"></span>
-        </div>
+    <!-- TIMELINES -->
+    <h2 class="home-hero textbox">Application Timelines</h2>
+    <div class="tealbox2">
+    <table>
+        <thead>
+            <tr>
+                <th class="th-company">Company</th>
+                <th class="th-jobtitle">Job Title</th>
+                <th class="th-timeline">Timeline</th>
+                <th class="th-actions"></th>
+                <th class="th-actions"></th>
+            </tr>
+        </thead>
 
-        <div>
-            <label asp-for="NewApplication.JobTitle"><strong>Job Title</strong></label>
-            <input asp-for="NewApplication.JobTitle" />
-            <span asp-validation-for="NewApplication.JobTitle" class="validation-error"></span>
-        </div>
-
-        <div>
-            <select asp-for="NewApplication.StageId"
-                    asp-items="@(new SelectList(Model.Stages, "StageId", "DisplayName"))">
-                <option value=""> -- Select Stage --</option>
-            </select>
-            <span asp-validation-for="NewApplication.StageId" class="validation-error"></span>
-        </div>
-
-        <button type="submit">Add Application</button>
-    </form>
-</section>
-<p>.</p>
-
-<!-- FUNNEL CHART -->
-<h2 class="home-hero textbox">Applications by Stage Reached</h2>
-<div class="chart-container tealbox1">
-    <canvas id="stageFunnelChart"></canvas>
-</div>
-<p>.</p>
-<hr />
-
-<!-- SANKEY CHART -->
-<h2 class="home-hero textbox">Application Flow </h2>
-<div class="sankey-container tealbox1">
-    <div id="sankey_chart"></div>
-</div>
-<p>.</p>
-
-<hr />
-
-<!-- TIMELINES -->
-<h2 class="home-hero textbox">Application Timelines</h2>
-<div class="tealbox2">
-<table>
-    <thead>
-        <tr>
-            <th class="th-company">Company</th>
-            <th class="th-jobtitle">Job Title</th>
-            <th class="th-timeline">Timeline</th>
-            <th class="th-actions"></th>
-            <th class="th-actions"></th>
-        </tr>
-    </thead>
-
-    <tbody style="background-color: aliceblue">
-    @if (!Model.Timelines.Any())
-    {
-        <tr>
-            <td colspan="5">No applications yet.</td>
-        </tr>
-    }
-    else
-    {
-        foreach (var app in Model.Timelines)
+        <tbody style="background-color: aliceblue">
+        @if (!Model.Timelines.Any())
         {
             <tr>
-                <td>@app.CompanyName</td>
-                <td>@app.JobTitle</td>
-
-                <td>
-                    <div class="timeline">
-                        @for (int i = 0; i < app.Events.Count; i++)
-                        {
-                            var ev = app.Events[i];
-                            <span class="stage-pill">@ev.DisplayName</span>
-
-                            if (i < app.Events.Count - 1)
-                            {
-                                <span class="timeline-arrow">→</span>
-                            }
-                        }
-                    </div>
-                </td>
-
-                <td>
-                    <form asp-action="UpdateApplication" method="get" style="display:inline;">
-                        <input type="hidden" name="id" value="@app.ApplicationId" />
-                        <button type="submit" class="edit-button">Update</button>
-                    </form>
-                </td>
-                <td>
-                    <form asp-action="DeleteApplication" method="post" style="display:inline;">
-                        <input type="hidden" name="applicationId" value="@app.ApplicationId" />
-                        <button type="submit" class="delete-button">Delete</button>
-                    </form>
-                </td>
+                <td colspan="5">No applications yet.</td>
             </tr>
         }
-    }
-    </tbody>
-</table>
-</div>
+        else
+        {
+            foreach (var app in Model.Timelines)
+            {
+                <tr>
+                    <td>@app.CompanyName</td>
+                    <td>@app.JobTitle</td>
 
-<!-- EDIT APPLICATION FORM -->
-@if (Model.UpdateApplication != null)
-{
-    <hr />
-    <h2>Edit Application</h2>
+                    <td>
+                        <div class="timeline">
+                            @for (int i = 0; i < app.Events.Count; i++)
+                            {
+                                var ev = app.Events[i];
+                                <span class="stage-pill">@ev.DisplayName</span>
 
-    <form asp-action="UpdateApplicationPost" method="post">
+                                if (i < app.Events.Count - 1)
+                                {
+                                    <span class="timeline-arrow">→</span>
+                                }
+                            }
+                        </div>
+                    </td>
 
-        <!-- Hidden primary key -->
-        <input type="hidden" asp-for="UpdateApplication.ApplicationId" />
-
-        <div>
-            <label asp-for="UpdateApplication.CompanyName"></label>
-            <input asp-for="UpdateApplication.CompanyName" />
-            <span asp-validation-for="UpdateApplication.CompanyName" class="validation-error"></span>
-        </div>
-
-        <div>
-            <label asp-for="UpdateApplication.JobTitle"></label>
-            <input asp-for="UpdateApplication.JobTitle" />
-            <span asp-validation-for="UpdateApplication.JobTitle" class="validation-error"></span>
-        </div>
-
-        <div>
-            <label asp-for="UpdateApplication.StageId">Final Stage</label>
-            <select asp-for="UpdateApplication.StageId"
-                    asp-items="@(new SelectList(Model.Stages, "StageId", "DisplayName"))">
-                <option value="">-- Select stage --</option>
-            </select>
-
-            <span asp-validation-for="UpdateApplication.StageId" class="validation-error"></span>
-        </div>
-
-        <button type="submit">Save Changes</button>
-    </form>
-}
-
-<!-- SCRIPTS -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://www.gstatic.com/charts/loader.js"></script>
-
-<script>
-(function () {
-
-    // -------- BAR CHART --------
-    const labels = @Html.Raw(labelsJson);
-    const counts = @Html.Raw(countsJson);
-
-    const ctx = document.getElementById('stageFunnelChart').getContext('2d');
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Applications (amount per category)',
-                data: counts
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,   // makes it scale with container
-            scales: {
-                y: { beginAtZero: true, ticks: { precision: 0 } }
+                    <td>
+                        <form asp-action="UpdateApplication" method="get" style="display:inline;">
+                            <input type="hidden" name="id" value="@app.ApplicationId" />
+                            <button type="submit" class="edit-button">Update</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form asp-action="DeleteApplication" method="post" style="display:inline;">
+                            <input type="hidden" name="applicationId" value="@app.ApplicationId" />
+                            <button type="submit" class="delete-button">Delete</button>
+                        </form>
+                    </td>
+                </tr>
             }
         }
-    });
+        </tbody>
+    </table>
+    </div>
 
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
 
-    // -------- SANKEY DIAGRAM --------
-    const sankeyRows = @Html.Raw(sankeyRowsJson);
+    <script>
+    (function () {
 
-    google.charts.load('current', { packages: ['sankey'] });
-    google.charts.setOnLoadCallback(drawSankey);
+        // -------- BAR CHART --------
+        const labels = @Html.Raw(labelsJson);
+        const counts = @Html.Raw(countsJson);
 
-    function drawSankey() {
-        const data = new google.visualization.DataTable();
+        const ctx = document.getElementById('stageFunnelChart').getContext('2d');
 
-        data.addColumn('string', 'From');
-        data.addColumn('string', 'To');
-        data.addColumn('number', 'Count');
-
-        data.addRows(sankeyRows);
-
-        const chart = new google.visualization.Sankey(
-            document.getElementById('sankey_chart')
-        );
-
-        chart.draw(data, {
-            width: '100%',     // responsive width
-            height: 400
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Applications (amount per category)',
+                    data: counts
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,   // makes it scale with container
+                scales: {
+                    y: { beginAtZero: true, ticks: { precision: 0 } }
+                }
+            }
         });
-    }
 
-    // Redraw on resize for responsiveness
-    window.addEventListener('resize', drawSankey);
+        // -------- SANKEY DIAGRAM --------
+        const sankeyRows = @Html.Raw(sankeyRowsJson);
 
-})();
-</script>
+        google.charts.load('current', { packages: ['sankey'] });
+        google.charts.setOnLoadCallback(drawSankey);
 
-</body>
+        function drawSankey() {
+            const data = new google.visualization.DataTable();
+
+            data.addColumn('string', 'From');
+            data.addColumn('string', 'To');
+            data.addColumn('number', 'Count');
+
+            data.addRows(sankeyRows);
+
+            const chart = new google.visualization.Sankey(
+                document.getElementById('sankey_chart')
+            );
+
+            chart.draw(data, {
+                width: '100%',     // responsive width
+                height: 400
+            });
+        }
+
+        // Redraw on resize for responsiveness
+        window.addEventListener('resize', drawSankey);
+
+    })();
+    </script>
+
+    </body>
 </html>
