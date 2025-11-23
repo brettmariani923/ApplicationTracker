@@ -22,9 +22,6 @@ public class DashboardController : Controller
     [HttpPost]
     public async Task<IActionResult> CreateApplication(DashboardViewModel model)
     {
-        if (!ModelState.IsValid)
-            return View("Index", await _dashboard.GetDashboardAsync());
-
         await _dashboard.CreateApplicationAsync(model.NewApplication);
         return RedirectToAction(nameof(Index));
     }
@@ -34,13 +31,9 @@ public class DashboardController : Controller
     [HttpPost]
     public async Task<IActionResult> UpdateApplicationPost(DashboardViewModel model)
     {
-        if (!ModelState.IsValid)
-            return View("Timeline", await _dashboard.GetUpdateAsync(model.UpdateApplication.ApplicationId));
-
         await _dashboard.UpdateApplicationAsync(model.UpdateApplication);
         return RedirectToAction(nameof(Index));
     }
-
 
     [HttpPost]
     public async Task<IActionResult> DeleteApplication(int applicationId)

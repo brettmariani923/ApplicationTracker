@@ -63,145 +63,145 @@
 
     <!-- FUNNEL CHART -->
     <h2 class="home-hero textbox">Applications by Stage Reached</h2>
-    <div class="chart-container tealbox1">
-        <canvas id="stageFunnelChart"></canvas>
-    </div>
-    <p>.</p>
+        <div class="chart-container tealbox1">
+            <canvas id="stageFunnelChart"></canvas>
+        </div>
+        <p>.</p>
     <hr />
 
     <!-- SANKEY CHART -->
     <h2 class="home-hero textbox">Application Flow </h2>
-    <div class="sankey-container tealbox1">
-        <div id="sankey_chart"></div>
-    </div>
+        <div class="sankey-container tealbox1">
+            <div id="sankey_chart"></div>
+        </div>
     <p>.</p>
 
     <hr />
 
     <!-- TIMELINES -->
     <h2 class="home-hero textbox">Application Timelines</h2>
-    <div class="tealbox2">
-    <table>
-        <thead>
-            <tr>
-                <th class="th-company">Company</th>
-                <th class="th-jobtitle">Job Title</th>
-                <th class="th-timeline">Timeline</th>
-                <th class="th-actions"></th>
-                <th class="th-actions"></th>
-            </tr>
-        </thead>
+        <div class="tealbox2">
+        <table>
+            <thead>
+                <tr>
+                    <th class="th-company">Company</th>
+                    <th class="th-jobtitle">Job Title</th>
+                    <th class="th-timeline">Timeline</th>
+                    <th class="th-actions"></th>
+                    <th class="th-actions"></th>
+                </tr>
+            </thead>
 
-        <tbody style="background-color: aliceblue">
-        @if (!Model.Timelines.Any())
-        {
-            <tr>
-                <td colspan="5">No applications yet.</td>
-            </tr>
-        }
-        else
-        {
-            foreach (var app in Model.Timelines)
+            <tbody style="background-color: aliceblue">
+            @if (!Model.Timelines.Any())
             {
                 <tr>
-                    <td>@app.CompanyName</td>
-                    <td>@app.JobTitle</td>
-
-                    <td>
-                        <div class="timeline">
-                            @for (int i = 0; i < app.Events.Count; i++)
-                            {
-                                var ev = app.Events[i];
-                                <span class="stage-pill">@ev.DisplayName</span>
-
-                                if (i < app.Events.Count - 1)
-                                {
-                                    <span class="timeline-arrow">→</span>
-                                }
-                            }
-                        </div>
-                    </td>
-
-                    <td>
-                        <form asp-action="UpdateApplication" method="get" style="display:inline;">
-                            <input type="hidden" name="id" value="@app.ApplicationId" />
-                            <button type="submit" class="edit-button">Update</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form asp-action="DeleteApplication" method="post" style="display:inline;">
-                            <input type="hidden" name="applicationId" value="@app.ApplicationId" />
-                            <button type="submit" class="delete-button">Delete</button>
-                        </form>
-                    </td>
+                    <td colspan="5">No applications yet.</td>
                 </tr>
             }
-        }
-        </tbody>
-    </table>
-    </div>
+            else
+            {
+                foreach (var app in Model.Timelines)
+                {
+                    <tr>
+                        <td>@app.CompanyName</td>
+                        <td>@app.JobTitle</td>
 
-    <!-- SCRIPTS -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://www.gstatic.com/charts/loader.js"></script>
+                        <td>
+                            <div class="timeline">
+                                @for (int i = 0; i < app.Events.Count; i++)
+                                {
+                                    var ev = app.Events[i];
+                                    <span class="stage-pill">@ev.DisplayName</span>
 
-    <script>
-    (function () {
+                                    if (i < app.Events.Count - 1)
+                                    {
+                                        <span class="timeline-arrow">→</span>
+                                    }
+                                }
+                            </div>
+                        </td>
 
-        // -------- BAR CHART --------
-        const labels = @Html.Raw(labelsJson);
-        const counts = @Html.Raw(countsJson);
-
-        const ctx = document.getElementById('stageFunnelChart').getContext('2d');
-
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Applications (amount per category)',
-                    data: counts
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,   // makes it scale with container
-                scales: {
-                    y: { beginAtZero: true, ticks: { precision: 0 } }
+                        <td>
+                            <form asp-action="UpdateApplication" method="get" style="display:inline;">
+                                <input type="hidden" name="id" value="@app.ApplicationId" />
+                                <button type="submit" class="edit-button">Update</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form asp-action="DeleteApplication" method="post" style="display:inline;">
+                                <input type="hidden" name="applicationId" value="@app.ApplicationId" />
+                                <button type="submit" class="delete-button">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
                 }
             }
-        });
+            </tbody>
+        </table>
+        </div>
 
-        // -------- SANKEY DIAGRAM --------
-        const sankeyRows = @Html.Raw(sankeyRowsJson);
+        <!-- SCRIPTS -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://www.gstatic.com/charts/loader.js"></script>
 
-        google.charts.load('current', { packages: ['sankey'] });
-        google.charts.setOnLoadCallback(drawSankey);
+        <script>
+        (function () {
 
-        function drawSankey() {
-            const data = new google.visualization.DataTable();
+            // -------- BAR CHART --------
+            const labels = @Html.Raw(labelsJson);
+            const counts = @Html.Raw(countsJson);
 
-            data.addColumn('string', 'From');
-            data.addColumn('string', 'To');
-            data.addColumn('number', 'Count');
+            const ctx = document.getElementById('stageFunnelChart').getContext('2d');
 
-            data.addRows(sankeyRows);
-
-            const chart = new google.visualization.Sankey(
-                document.getElementById('sankey_chart')
-            );
-
-            chart.draw(data, {
-                width: '100%',     // responsive width
-                height: 400
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Applications (amount per category)',
+                        data: counts
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,   // makes it scale with container
+                    scales: {
+                        y: { beginAtZero: true, ticks: { precision: 0 } }
+                    }
+                }
             });
-        }
 
-        // Redraw on resize for responsiveness
-        window.addEventListener('resize', drawSankey);
+            // -------- SANKEY DIAGRAM --------
+            const sankeyRows = @Html.Raw(sankeyRowsJson);
 
-    })();
-    </script>
+            google.charts.load('current', { packages: ['sankey'] });
+            google.charts.setOnLoadCallback(drawSankey);
+
+            function drawSankey() {
+                const data = new google.visualization.DataTable();
+
+                data.addColumn('string', 'From');
+                data.addColumn('string', 'To');
+                data.addColumn('number', 'Count');
+
+                data.addRows(sankeyRows);
+
+                const chart = new google.visualization.Sankey(
+                    document.getElementById('sankey_chart')
+                );
+
+                chart.draw(data, {
+                    width: '100%',     // responsive width
+                    height: 400
+                });
+            }
+
+            // Redraw on resize for responsiveness
+            window.addEventListener('resize', drawSankey);
+
+        })();
+        </script>
 
     </body>
 </html>
