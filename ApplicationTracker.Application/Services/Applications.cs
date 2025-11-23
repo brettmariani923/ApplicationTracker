@@ -75,7 +75,6 @@ namespace ApplicationTracker.Application.Services
 
             return newAppId;
         }
-
         private async Task<Dictionary<string, Stage_Row>> GetStagesByKeyAsync()
         {
             var stagesRequest = new ReturnAllStagesRequest();

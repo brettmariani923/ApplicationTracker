@@ -34,6 +34,5 @@ namespace ApplicationTracker.Application.Services
                 .OrderBy(s => s.SortOrder)
                 .ToList();
         }
-
     }
 }
