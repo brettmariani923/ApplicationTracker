@@ -50,74 +50,78 @@
 }
 
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/css/dashboard.css" />
 </head>
-<!-- TIMELINES -->
-<h2 class="home-hero textbox">Application Timelines</h2>
-<div class="tealbox2">
-<table>
-    <thead>
-        <tr>
-            <th class="th-company">Company</th>
-            <th class="th-jobtitle">Job Title</th>
-            <th class="th-timeline">Timeline</th>
-            <th class="th-actions"></th>
-            <th class="th-actions"></th>
-        </tr>
-    </thead>
 
-    <tbody style="background-color: aliceblue">
-    @if (!Model.Timelines.Any())
-    {
-        <tr>
-            <td colspan="5">No applications yet.</td>
-        </tr>
-    }
-    else
-    {
-        foreach (var app in Model.Timelines)
+    <body>
+    <!-- TIMELINES -->
+    <h2 class="home-hero textbox">Application Timelines</h2>
+    <div class="tealbox2">
+    <table>
+        <thead>
+            <tr>
+                <th class="th-company">Company</th>
+                <th class="th-jobtitle">Job Title</th>
+                <th class="th-timeline">Timeline</th>
+                <th class="th-actions"></th>
+                <th class="th-actions"></th>
+            </tr>
+        </thead>
+
+        <tbody style="background-color: aliceblue">
+        @if (!Model.Timelines.Any())
         {
             <tr>
-                <td>@app.CompanyName</td>
-                <td>@app.JobTitle</td>
-
-                <td>
-                    <div class="timeline">
-                        @for (int i = 0; i < app.Events.Count; i++)
-                        {
-                            var ev = app.Events[i];
-                            <span class="stage-pill">@ev.DisplayName</span>
-
-                            if (i < app.Events.Count - 1)
-                            {
-                                <span class="timeline-arrow">→</span>
-                            }
-                        }
-                    </div>
-                </td>
-
-                <td>
-                    <form asp-action="UpdateApplication" method="get" style="display:inline;">
-                        <input type="hidden" name="id" value="@app.ApplicationId" />
-                        <button type="submit" class="edit-button">Update</button>
-                    </form>
-                </td>
-                <td>
-                    <form asp-action="DeleteApplication" method="post" style="display:inline;">
-                        <input type="hidden" name="applicationId" value="@app.ApplicationId" />
-                        <button type="submit" class="delete-button">Delete</button>
-                    </form>
-                </td>
+                <td colspan="5">No applications yet.</td>
             </tr>
         }
-    }
-    </tbody>
-</table>
-</div>
+        else
+        {
+            foreach (var app in Model.Timelines)
+            {
+                <tr>
+                    <td>@app.CompanyName</td>
+                    <td>@app.JobTitle</td>
+
+                    <td>
+                        <div class="timeline">
+                            @for (int i = 0; i < app.Events.Count; i++)
+                            {
+                                var ev = app.Events[i];
+                                <span class="stage-pill">@ev.DisplayName</span>
+
+                                if (i < app.Events.Count - 1)
+                                {
+                                    <span class="timeline-arrow">→</span>
+                                }
+                            }
+                        </div>
+                    </td>
+
+                    <td>
+                        <form asp-action="UpdateApplication" method="get" style="display:inline;">
+                            <input type="hidden" name="id" value="@app.ApplicationId" />
+                            <button type="submit" class="edit-button">Update</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form asp-action="DeleteApplication" method="post" style="display:inline;">
+                            <input type="hidden" name="applicationId" value="@app.ApplicationId" />
+                            <button type="submit" class="delete-button">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+    </div>
+    </body>
 </html>
 
 

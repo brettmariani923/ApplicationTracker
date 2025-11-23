@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="utf-8" /> 
@@ -9,28 +10,28 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> <!-- loads bootstrap CSS-->
 </head>
 
-<body>
+    <body>
   
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-light border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Dashboard" asp-action="Index">
-                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngkey.com%2Fpng%2Fdetail%2F15-159372_home-icon-png-white-graphic-transparent-download-home.png&f=1&nofb=1&ipt=bf5dfe76fd7097507ebe1fb25322558c113eab349030786901fd546bbf6e50c0">
-                </a>
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-light border-bottom box-shadow mb-3">
+                <div class="container-fluid">
+                    <a class="navbar-brand" asp-area="" asp-controller="Dashboard" asp-action="Index">
+                        <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngkey.com%2Fpng%2Fdetail%2F15-159372_home-icon-png-white-graphic-transparent-download-home.png&f=1&nofb=1&ipt=bf5dfe76fd7097507ebe1fb25322558c113eab349030786901fd546bbf6e50c0">
+                    </a>
 
+                </div>
+            </nav>
+        </header>
+
+        <main class="container my-4">
+            @RenderBody()
+        </main>
+
+        <footer class="border-top py-3 text-muted">
+            <div class="container">
+                © @DateTime.Now.Year - Brett Mariani
             </div>
-        </nav>
-    </header>
-
-    <main class="container my-4">
-        @RenderBody()
-    </main>
-
-    <footer class="border-top py-3 text-muted">
-        <div class="container">
-            © @DateTime.Now.Year - Brett Mariani
-        </div>
-    </footer>
+        </footer>
   
-</body>
+    </body>
 </html>
