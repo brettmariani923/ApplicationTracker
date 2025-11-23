@@ -4,8 +4,6 @@ using ApplicationTracker.Data.Interfaces;
 using ApplicationTracker.Data.Requests.ReturnStageFunnelStatsRequest;
 using ApplicationTracker.Data.Rows;
 
-
-
 namespace ApplicationTracker.Application.Services
 {
     public class Funnel : IFunnel

@@ -12,5 +12,4 @@ namespace ApplicationTracker.Application.Interfaces
         Task UpdateApplicationAsync(Application_Row update);
         Task DeleteApplicationAsync(int id);
     }
-
 }

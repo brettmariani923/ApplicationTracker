@@ -2,7 +2,6 @@
 using ApplicationTracker.Data.Rows;
 using ApplicationTracker.Application.Interfaces;
 
-
 namespace ApplicationTracker.Application.Services
 {
     public class DashboardService : IDashboardService

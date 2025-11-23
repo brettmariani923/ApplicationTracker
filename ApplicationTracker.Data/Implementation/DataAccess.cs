@@ -2,7 +2,6 @@
 using System.Data;
 using ApplicationTracker.Data.Interfaces;
 
-
 namespace ApplicationTracker.Data.Implementation
 {
     public class DataAccess : IDataAccess

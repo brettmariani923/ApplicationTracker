@@ -203,7 +203,6 @@ namespace ApplicationTracker.Application.Services
             }
         }
 
-
         public async Task<Application_Row?> GetApplicationByIdAsync(int id)
         {
             var request = new ReturnApplicationByIdRequest(id);

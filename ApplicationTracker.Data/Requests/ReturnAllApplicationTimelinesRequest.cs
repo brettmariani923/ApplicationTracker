@@ -1,5 +1,4 @@
-﻿// ApplicationTracker.Data.Requests.ApplicationEvents
-using ApplicationTracker.Data.Interfaces;
+﻿using ApplicationTracker.Data.Interfaces;
 using ApplicationTracker.Data.Rows;
 
 namespace ApplicationTracker.Data.Requests.ReturnAllApplicationTimelinesRequest;
