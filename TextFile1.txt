@@ -66,3 +66,5 @@ Add Update buttonx
 probably should move application timelines to a separate view, for when it really starts to pile upx
 
 fix nav bar at the top
+
+change names of css box classes.

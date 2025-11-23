@@ -21,6 +21,7 @@ builder.Services.AddScoped<IFunnel, Funnel>();
 builder.Services.AddScoped<ISankeyLinks, SankeyLinks>();
 builder.Services.AddScoped<IStages, Stages>();
 builder.Services.AddScoped<ITimelines, Timelines>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 var app = builder.Build();
 

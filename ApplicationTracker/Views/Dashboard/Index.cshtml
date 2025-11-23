@@ -23,13 +23,17 @@
     <link rel="stylesheet" href="~/css/dashboard.css" />
 </head>
 <body>
-<h1 class='home-hero bluebox'><strong>Application Tracker Dashboard</strong> </h1>
+<div style="text-align: center;">
+    <h1 class="home-hero bluebox"><strong>Application Tracker Dashboard</strong></h1>
+    <p>.</p>
+</div>
+
 
 <!-- ADD NEW APPLICATION -->
 <section>
-    <h2 class="home-hero yellowbox">Add New Application</h2>
+    <h2 class="home-hero textbox">Add New Application</h2>
 
-    <form asp-action="CreateApplication" method="post" class="red-box" >
+    <form asp-action="CreateApplication" method="post" class="tealbox" >
 
         <div>
             <label asp-for="NewApplication.CompanyName"><strong>Company Name</strong></label>
@@ -54,30 +58,28 @@
         <button type="submit">Add Application</button>
     </form>
 </section>
-
-<hr />
+<p>.</p>
 
 <!-- FUNNEL CHART -->
-<h2 class="home-hero greenbox">Applications by Stage Reached</h2>
-<div class="chart-container red-box1">
+<h2 class="home-hero textbox">Applications by Stage Reached</h2>
+<div class="chart-container tealbox1">
     <canvas id="stageFunnelChart"></canvas>
 </div>
-
+<p>.</p>
 <hr />
 
 <!-- SANKEY CHART -->
-<h2 class="home-hero orangebox">Application Flow </h2>
-<div class="sankey-container red-box1">
+<h2 class="home-hero textbox">Application Flow </h2>
+<div class="sankey-container tealbox1">
     <div id="sankey_chart"></div>
 </div>
-
-
+<p>.</p>
 
 <hr />
 
 <!-- TIMELINES -->
-<h2 class="home-hero lightbluebox">Application Timelines</h2>
-<div class="red-box2">
+<h2 class="home-hero textbox">Application Timelines</h2>
+<div class="tealbox2">
 <table>
     <thead>
         <tr>

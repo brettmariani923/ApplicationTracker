@@ -1,47 +1,6 @@
-﻿
-/* Home page */
+﻿/* Home page */
 .home-hero {
     text-align: center;
-}
-
-.brand-box {
-    border: 2px solid red;
-    display: inline-block;
-    padding: 10px;
-    border-radius: 8px;
-}
-
-/* Welcome line spacing */
-.welcome {
-    margin-top: .5rem;
-    margin-bottom: 1rem;
-}
-
-.team-wrap {
-    /* center the red box */
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    width: 100%;
-    margin: 1.5rem 0;
-}
-
-/* Actions row (flex bundle) */
-.actions {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    height: 100%;
-    margin: 4px 0;
-    flex-wrap: nowrap; /* default: keep on one line at normal widths */
-}
-
-.action-form {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    margin: 0;
-    min-width: 0;
 }
 
 .input-compact {
@@ -53,16 +12,13 @@
 .btn-compact {
     height: 32px;
     padding: 0 12px;
-    white-space: nowrap; /* keeps button text inline */
-    flex: 0 0 auto; /* don't let button shrink */
-    min-width: max-content; /* fit its label without wrapping */
+    white-space: nowrap;
+    flex: 0 0 auto;
+    min-width: max-content;
     max-height: 32px;
     line-height: 32px;
+    border-radius: 6px; 
 }
-
-    .team-add .btn-compact {
-        flex: 0 0 auto;
-    }
 
 /* Tablet: allow clean wrapping/stacking instead of awkward squeezes */
 @media (max-width: 768px) {
@@ -100,8 +56,8 @@
     }
 }
 
-.red-box {
-    border: 2px solid teal;
+.tealbox {
+    border: 4px solid teal;
     padding: 16px;
     border-radius: 8px;
     max-width: 350px;
@@ -116,7 +72,7 @@
 }
 
     /* Make labels + inputs stack nicely */
-    .red-box div {
+    .tealbox div {
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -126,11 +82,21 @@
         justify-content: center;
     }
 
-.red-box2 {
-    border: 2px solid teal;
+.tealbox1 {
+    border: 4px solid teal;
     padding: 16px;
     border-radius: 8px;
     max-width: 800px;
+    margin: 1.5rem;
+    background-color: white;
+}
+
+.tealbox2 {
+    border: 4px solid teal;
+    padding: 16px;
+    border-radius: 8px;
+    max-width: 800px;
+    min-width: 500px;
     margin: 1.5rem auto;
     /* Center contents */
     display: flex;
@@ -139,23 +105,15 @@
     justify-content: center; /* vertical centering (optional) */
     background-color: white
 }
-.red-box1 {
-    border: 2px solid teal;
-    padding: 16px;
-    border-radius: 8px;
-    max-width: 800px;
-    margin: 1.5rem;
-    background-color: white;
-}
 
-.bluebox{
+.bluebox {
     border: 2px solid blue;
-    padding:16px;
+    padding: 16px;
     border-radius: 8px;
     max-width: 800px;
     margin: 1.5rem auto;
     text-align: center;
-    background-color:lavender;
+    background-color: lavender;
 }
 
 .bluebox2 {
@@ -168,51 +126,14 @@
     background-color: lavender;
 }
 
-.orangebox{
-    border: 2px solid orange;
-    padding: 16px;
-    border-radius: 8px;
-    max-width: 300px;
-    margin: 1.5rem auto;
-    background-color: snow;
-}
-
-.lightbluebox {
+.textbox {
     border: 2px solid turquoise;
     padding: 16px;
     border-radius: 8px;
-    max-width: 350px;
-    margin: 1.5rem auto;
-    background-color: azure
-}
-
-.yellowbox {
-    border: 2px solid gold;
-    padding: 16px;
-    border-radius: 8px;
     max-width: 500px;
+    text-align: center;
     margin: 1.5rem auto;
-    background-color: white;
-}
-
-.greenbox {
-    border: 2px solid lightgreen;
-    padding: 16px;
-    border-radius: 8px;
-    max-width: 470px;
-    text-align:center;
-    margin: 1.5rem auto;
-    background-color: azure
-}
-
-/* Compact form layout */
-.search-form {
-    margin-bottom: 1rem;
-}
-
-/* Input block spacing */
-.input-block {
-    margin-bottom: 0.5rem;
+    background-color: azure;
 }
 
 /* Button row alignment */
@@ -233,10 +154,6 @@
     font-weight: 600;
     color: #212529;
 }
-
-    .navbar-nav .nav-link:hover {
-        color: #d32f2f; /* red hover accent for Pokémon theme */
-    }
 
 /* Footer */
 .footer {
@@ -260,8 +177,19 @@ main {
 
 body {
     background-image: url('/images/space2.jpg');
-    background-size: contain; /* make it fill the page */
-    background-repeat: repeat; /* prevent tiling */
-    background-attachment: fixed; /* nice parallax effect */
+    background-size: contain;
+    background-repeat: repeat;
+    background-attachment: fixed;
     background-position: center;
+}
+
+h2 {
+    font-family: "Agency FB", "Segoe UI", sans-serif;
+    letter-spacing: 1px;
+}
+
+h1 {
+    font-family: "Agency FB", "Segoe UI", sans-serif;
+    letter-spacing: 2px;
+    font-size: 36px;
 }
